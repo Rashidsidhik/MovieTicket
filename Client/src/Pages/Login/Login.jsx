@@ -39,41 +39,6 @@ const Login = () => {
   const navigate = useNavigate();
 
  
-  // async function handleCallbackResponse(response) {
-
-
-  //   const userObject = jwt_decode(response.credential);
-
-
-  //   if (userObject && userObject.email && userObject.email_verified) {
-  //     const { goog } = await axios.post(googleSignup, {
-  //         email: userObject.email,
-  //       }).then((response) => {
-         
-  //         dispatch(setLogin({ user: response.data.user, token: response.data.token }));
-	// 	  google.accounts.id.prompt();
-	// 	  setTimeout(() => {
-	// 		navigate("/");
-	// 	  }, 2000);
-  //       })
-  //       .catch((error) => {
-  //         setError(error.response.data.message);
-        
-  //       });
-  //   }
-  // }
-  // React.useEffect(() => {
-  //   /* global google */
-  //   google.accounts.id.initialize({
-  //     client_id:
-  //       "971097628560-26uun738hpuq45o29ebslj7abnhu06p5.apps.googleusercontent.com",
-  //     callback: handleCallbackResponse,
-  //   });
-  //   google.accounts.id.renderButton(document.getElementById("signdiv"), {
-  //     theme: "outline",
-  //     size: "large",
-  //   });
-  // }, []);
 
   const dispatch = useDispatch();
   const formik = useFormik({
@@ -123,7 +88,7 @@ const Login = () => {
             onSubmit={formik.handleSubmit}
           >
             <h1>
-              LOGIN TO CINE <span style={{ color: "red" }}>BOOK</span>
+              LOGIN TO CINE <span style={{ color: "rgb(30,29,34)" }}>BOOK</span>
             </h1>
             <br />
             <input

@@ -3,7 +3,7 @@ import SwiperCore, { Autoplay } from "swiper";
 import "swiper/css";
 import "./Banner.scss";
 import React, { useEffect, useState } from "react";
-import "./Banner.scss";
+
 import axios from "../../utils/axios";
 import { toast, ToastContainer } from "react-toastify";
 
@@ -47,7 +47,7 @@ const HeroSlideItem = () => {
 
       <div
         className="hero-slide__item"
-        style={{ backgroundImage: `url("https://img.freepik.com/premium-vector/vintage-pop-art-red-banner-background_175838-452.jpg?w=996")` }}
+        style={{ backgroundImage: `url("https://media.istockphoto.com/id/1256986836/vector/blue-movie-cinema-banner-design-camcorder-with-place-for-your-text.jpg?s=1024x1024&w=is&k=20&c=wK7mQhNOTdysD7-SF9BYl7humyBcsK0edqiVwQwx17g=")` }}
       >
         <div className="hero-slide__item__content container">
           <div className="hero-slide__item__content__info">

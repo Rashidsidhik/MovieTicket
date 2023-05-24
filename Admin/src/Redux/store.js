@@ -41,6 +41,9 @@ export const authSlice = createSlice({
     setCount: (state, action) => {
       state.count = action.payload.count;
     },
+    setMove:(state,action)=>{
+      state.movie=action.payload.movie
+  },
   },
 });
 
@@ -53,5 +56,6 @@ export const {
   setTheater,
   setMessages,
   setCount,
+  setMove,
 } = authSlice.actions;
 export default authSlice.reducer;

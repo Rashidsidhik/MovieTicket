@@ -13,7 +13,7 @@ import New from "./pages/ADDMOVIE/New";
 import Home from './pages/Home/Home';
 import MovieList from "./pages/MovieList/MovieList";
 import Singles from "./pages/TheaterList/TheaterList";
-
+import EditMovie from "./components/EditMovie/EditMovie";
 
 
 
@@ -44,7 +44,7 @@ function App() {
             <Route path="/movieList" element={<MovieList />} />
             <Route path="/users-list" element={<Single />} />
             <Route path="/theater-list" element={<Singles />} />
-      
+            <Route path="/editMovie/:id" element={<EditMovie />} />
           </Routes>
           
  

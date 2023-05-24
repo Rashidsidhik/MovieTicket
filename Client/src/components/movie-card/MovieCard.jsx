@@ -66,9 +66,9 @@ const MovieCard = (props) => {
                         <h2>{movie.title}</h2> <br />
                         <br />
                         <span style={{ color: "red" }}>{movie.genre}</span>
-                        <span style={{ paddingLeft: "20px", color: "yellow" }}>
+                        <span style={{ paddingLeft: "20px", color: "red" }}>
                           {movie.duration}{" "}
-                          <span style={{ color: "white" }}>min</span>
+                          <span style={{ color: "red" }}>min</span>
                         </span>
                       </h5>
                     </Link>

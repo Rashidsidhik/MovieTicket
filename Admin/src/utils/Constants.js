@@ -14,3 +14,5 @@ export const getAllTheaters = "api/admin/getAllTheaters";
 export const rejectTheater = "api/admin/rejectTheater"; 
 export const approveTheater = "api/admin/approveTheater"; 
 export const getAllTheater = "api/admin/getAllTheater";
+export const getMovie = "api/admin/getMovie"; 
+export const movieEditPost = "api/admin/editMovie";

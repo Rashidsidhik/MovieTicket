@@ -9,7 +9,10 @@ const {
   unblockStaff,
   blockStaff,
   getAllTheater,
-  getAllTheaters
+  getAllTheaters,
+  deleteMovie,
+  editMovie,
+  getMovie
 } = require("../controllers/admin");
 const { Admin } = require("../models/admin");
 const router = express.Router();
@@ -23,5 +26,7 @@ router.patch("/unblock/:id",verifyToken, unblockStaff);
 router.patch("/block/:id",verifyToken, blockStaff); 
 router.get("/getAllTheater",verifyToken, getAllTheater);
 router.get("/getAllTheaters",verifyToken, getAllTheaters);
-
+router.delete("/deleteMovie/:id", verifyToken, deleteMovie); 
+router.post("/editMovie/:id",verifyToken, editMovie);
+router.get("/getMovie/:id",verifyToken, getMovie);
 module.exports = router;

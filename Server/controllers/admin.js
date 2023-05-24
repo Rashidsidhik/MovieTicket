@@ -197,4 +197,45 @@ module.exports = {
       res.status(error.status).json(error.message);
     }
   },
+  deleteMovie: async (req, res) => {
+    let id = req.params.id;
+
+    try {
+      const data = await Movie.findByIdAndRemove({ _id: id });
+      const update=await Movie.find().sort("-createdAt");
+      res.status(200).json(update);
+    } catch (error) {}
+  },
+  editMovie: async (req, res) => {
+    const id = req.params.id;
+    const output = {};
+
+    if (req.body.datas.title) output.title = req.body.datas.title;
+    if (req.body.datas.description)
+      output.description = req.body.datas.description;
+    if (req.body.datas.genre) output.genre = req.body.datas.genre;
+    if (req.body.datas.director) output.director = req.body.datas.director;
+    if (req.body.datas.duration) output.duration = req.body.datas.duration;
+    if (req.body.datas.releasedate)
+      output.releasedate = req.body.datas.releasedate;
+    if (req.body.datas.imageUrl) output.imageUrl = req.body.datas.imageUrl;
+
+    try {
+      const movie = await Movie.findByIdAndUpdate(id, output);
+
+      res.status(200).json(movie);
+    } catch (error) {
+      res.status(500).send({ message: "Internal Server Error" + error });
+    }
+  },
+  getMovie: async (req, res) => {
+    const movieId = req.params.id;
+    try {
+      const movies = await Movie.findOne({ _id: Object(movieId) });
+
+      res.json(movies);
+    } catch (error) {
+      res.status(500).send({ message: "Internal Server Error" + error });
+    }
+  },
 };

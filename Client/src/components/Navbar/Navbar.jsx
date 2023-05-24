@@ -222,7 +222,7 @@ const Header = () => {
       <div className="header__wrap container">
         <div className="logo">
           <Link style={{ textDecoration: "none", color: "white" }} to="/">
-            CINE <span style={{ color: "red" }}>BOOK</span>
+            CINE <span style={{ color: "rgb(30,29,34)" }}>BOOK</span>
           </Link>
         </div>
         <ul className="header__nav">

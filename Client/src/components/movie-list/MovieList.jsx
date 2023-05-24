@@ -49,7 +49,7 @@ const MovieList = (props) => {
       className="movie-list"
       style={{
         paddingLeft: "100px",
-        backgroundColor: "black",
+        backgroundColor: "rgb(243,241,241)",
         borderColor: "white",
       }}
     >

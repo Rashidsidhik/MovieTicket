@@ -110,7 +110,7 @@ const Signup = () => {
             onSubmit={formik.handleSubmit}
           >
             <h1>
-              CREATE <span style={{ color: "red" }}>ACCOUNT</span>
+              CREATE <span style={{ color: "rgb(30,29,34)" }}>ACCOUNT</span>
             </h1>
             <br />
             <input
