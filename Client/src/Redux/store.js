@@ -50,6 +50,12 @@ export const authSlice = createSlice({
     setMovies: (state, action) => {
       state.movies = action.payload.movies;
     },
+    setOtp: (state, action) => {
+      state.otp = action.payload.otp;
+    },
+    setTempemail: (state, action) => {
+      state.tempemail = action.payload.tempemail;
+    },
   },
 });
 
@@ -57,7 +63,6 @@ export const {
   setMode,
   setLogin,
   setLogout,
-  
   setToken,
   setPosts,
   setPost,
@@ -65,5 +70,7 @@ export const {
   setMovie,
   setSearchKey,
   setMovies,
+  setOtp,
+  setTempemail
 } = authSlice.actions;
 export default authSlice.reducer;

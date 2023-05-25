@@ -5,7 +5,6 @@ import styles from "./styles.module.scss";
 import {  googleSignup,loginPost } from "../../utils/Constants";
 import { setLogin } from "../../Redux/store";
 import { useDispatch } from "react-redux";
-
 import { useCookies } from "react-cookie";
 import React from "react";
 import jwt_decode from "jwt-decode";
@@ -37,7 +36,41 @@ const validate = (values) => {
 };
 const Login = () => {
   const navigate = useNavigate();
+  async function handleCallbackResponse(response) {
 
+
+    const userObject = jwt_decode(response.credential);
+
+
+    if (userObject && userObject.email && userObject.email_verified) {
+      const { goog } = await axios.post(googleSignup, {
+          email: userObject.email,
+        }).then((response) => {
+         
+          dispatch(setLogin({ user: response.data.user, token: response.data.token }));
+		  google.accounts.id.prompt();
+		  setTimeout(() => {
+			navigate("/");
+		  }, 2000);
+        })
+        .catch((error) => {
+          setError(error.response.data.message);
+        
+        });
+    }
+  }
+  React.useEffect(() => {
+    /* global google */
+    google.accounts.id.initialize({
+      client_id:
+        "869952252132-s0dfscmldh42h80ahbo6vr95r0pj41tb.apps.googleusercontent.com",
+      callback: handleCallbackResponse,
+    });
+    google.accounts.id.renderButton(document.getElementById("signdiv"), {
+      theme: "outline",
+      size: "large",
+    });
+  }, []);
  
 
   const dispatch = useDispatch();
@@ -122,11 +155,11 @@ const Login = () => {
         </div>
         <div className={styles.right}>
           <h1>New Here ?</h1>
-          {/* <div>
+          <div>
             <Link to="/otpLogin">
-              <button className={styles.green_btn}>OT P Login</button>
+              <button className={styles.green_btn}>OTP Login</button>
             </Link>
-          </div> */}
+          </div>
           <Link to="/signup">
             <button type="button" className={styles.white_btn}>
               SIGNUP

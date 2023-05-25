@@ -15,42 +15,42 @@ const Footer = () => {
         </div>
         <div className="footer__content__menus">
           <div className="footer__content__menu">
-            <Link style={{ textDecoration: "none", color: "rgb(30,29,34)" }} to="/">
+            <Link style={{ textDecoration: "none", color: "rgb(243,241,241)" }} to="/">
               Home
             </Link>
-            <Link style={{ textDecoration: "none", color: "rgb(30,29,34)"  }} to="/">
+            <Link style={{ textDecoration: "none", color: "rgb(243,241,241)"  }} to="/">
               Contact us
             </Link>
 
-            <Link style={{ textDecoration: "none", color: "rgb(30,29,34)"  }} to="/">
+            <Link style={{ textDecoration: "none", color: "rgb(243,241,241)"  }} to="/">
               Term of services
             </Link>
-            <Link style={{ textDecoration: "none", color: "rgb(30,29,34)"  }} to="/">
+            <Link style={{ textDecoration: "none", color: "rgb(243,241,241)"  }} to="/">
               About us
             </Link>
           </div>
           <div className="footer__content__menu">
-            <Link style={{ textDecoration: "none", color: "rgb(30,29,34)"  }} to="/">
+            <Link style={{ textDecoration: "none", color: "rgb(243,241,241)"  }} to="/">
               Live
             </Link>
-            <Link style={{ textDecoration: "none", color: "rgb(30,29,34)"  }} to="/">
+            <Link style={{ textDecoration: "none", color: "rgb(243,241,241)"  }} to="/">
               FAQ
             </Link>
-            <Link style={{ textDecoration: "none", color: "rgb(30,29,34)"  }} to="/">
+            <Link style={{ textDecoration: "none", color: "rgb(243,241,241)"  }} to="/">
               Premium
             </Link>
-            <Link style={{ textDecoration: "none", color: "rgb(30,29,34)"  }} to="/">
+            <Link style={{ textDecoration: "none", color: "rgb(243,241,241)"  }} to="/">
               Pravacy policy
             </Link>
           </div>
           <div className="footer__content__menu">
-            <Link style={{ textDecoration: "none", color: "rgb(30,29,34)"  }} to="/">
+            <Link style={{ textDecoration: "none", color: "rgb(243,241,241)"  }} to="/">
               You must watch
             </Link>
-            <Link style={{ textDecoration: "none", color: "rgb(30,29,34)"  }} to="/">
+            <Link style={{ textDecoration: "none", color: "rgb(243,241,241)"  }} to="/">
               Recent release
             </Link>
-            <Link style={{ textDecoration: "none", color: "rgb(30,29,34)"  }} to="/">
+            <Link style={{ textDecoration: "none", color: "rgb(243,241,241)"  }} to="/">
               Top IMDB
             </Link>
           </div>
