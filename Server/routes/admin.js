@@ -12,7 +12,10 @@ const {
   getAllTheaters,
   deleteMovie,
   editMovie,
-  getMovie
+  getMovie,
+  addPoster,
+  getAllPoster,
+  deletePoster,
 } = require("../controllers/admin");
 const { Admin } = require("../models/admin");
 const router = express.Router();
@@ -29,4 +32,7 @@ router.get("/getAllTheaters",verifyToken, getAllTheaters);
 router.delete("/deleteMovie/:id", verifyToken, deleteMovie); 
 router.post("/editMovie/:id",verifyToken, editMovie);
 router.get("/getMovie/:id",verifyToken, getMovie);
+router.post("/addPoster",verifyToken, addPoster); 
+router.get("/getAllPoster",verifyToken, getAllPoster);
+router.delete("/deletePoster/:id", verifyToken, deletePoster); 
 module.exports = router;

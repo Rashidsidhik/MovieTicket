@@ -3,10 +3,10 @@ import SwiperCore, { Autoplay } from "swiper";
 import "swiper/css";
 import "./Banner.scss";
 import React, { useEffect, useState } from "react";
-
+import "./Banner.scss";
 import axios from "../../utils/axios";
 import { toast, ToastContainer } from "react-toastify";
-
+import { getAllPoster } from "../../utils/Constants";
 
 function UncontrolledExample() {
   const generateError = (error) =>
@@ -14,7 +14,25 @@ function UncontrolledExample() {
       position: "top-right",
     });
 
-  
+  const [poster, setPoster] = useState([]);
+
+  useEffect(() => {
+    const getAllPosters = () => {
+      axios
+        .get(getAllPoster)
+        .then((response) => {
+          setPoster(response.data);
+        })
+        .catch((error) => {
+          if (error.response) {
+            generateError(error.response.data.message);
+          } else {
+            generateError("Network error. Please try again later.");
+          }
+        });
+    };
+    getAllPosters();
+  }, []);
 
   SwiperCore.use([Autoplay]);
 
@@ -29,11 +47,11 @@ function UncontrolledExample() {
         onSwiper={(swiper) => console.log(swiper)}
         autoplay={{ delay: 3000 }}
       >
-
-          <SwiperSlide >
-            <HeroSlideItem  />
+        {poster.map((item, index) => (
+          <SwiperSlide key={index}>
+            <HeroSlideItem item={item} />
           </SwiperSlide>
-
+        ))}
       </Swiper>
       <ToastContainer />
     </>
@@ -42,12 +60,12 @@ function UncontrolledExample() {
 
 export default UncontrolledExample;
 
-const HeroSlideItem = () => {
+const HeroSlideItem = ({ item }) => {
   return (
-
+    <a href={item.PosterUrl}>
       <div
         className="hero-slide__item"
-        style={{ backgroundImage: `url("https://media.istockphoto.com/id/1256986836/vector/blue-movie-cinema-banner-design-camcorder-with-place-for-your-text.jpg?s=1024x1024&w=is&k=20&c=wK7mQhNOTdysD7-SF9BYl7humyBcsK0edqiVwQwx17g=")` }}
+        style={{ backgroundImage: `url(${item.posterImageUrl})` }}
       >
         <div className="hero-slide__item__content container">
           <div className="hero-slide__item__content__info">
@@ -63,6 +81,6 @@ const HeroSlideItem = () => {
           </div>
         </div>
       </div>
-   
+    </a>
   );
 };

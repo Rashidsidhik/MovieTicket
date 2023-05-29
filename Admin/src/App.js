@@ -14,11 +14,9 @@ import Home from './pages/Home/Home';
 import MovieList from "./pages/MovieList/MovieList";
 import Singles from "./pages/TheaterList/TheaterList";
 import EditMovie from "./components/EditMovie/EditMovie";
-
-
-
-
-
+import AddPoster from "./pages/AddPoster/Poster";
+import PosterList from "./components/list/list";
+import EditPoster from "./components/EditPoster/EditPoster";
 function App() {
   const { darkMode } = useContext(DarkModeContext);
   const token = useSelector(state=>state.token)
@@ -45,6 +43,9 @@ function App() {
             <Route path="/users-list" element={<Single />} />
             <Route path="/theater-list" element={<Singles />} />
             <Route path="/editMovie/:id" element={<EditMovie />} />
+            <Route path="/editPoster/:id" element={<EditPoster />} />
+          <Route path="/addPoster" element={<AddPoster />} />
+          <Route path="/listPoster" element={<PosterList />} />
           </Routes>
           
  

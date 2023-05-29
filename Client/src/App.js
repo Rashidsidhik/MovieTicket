@@ -9,7 +9,9 @@ import React from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import {useDispatch, useSelector} from 'react-redux';
 import PageNotFound from './PageNotFound';
-
+import Profile from './Pages/Profile/Profile';
+import Profileedit from './components/Profileedit/Profileedit';
+import Detail from './Pages/detail/Detail';
 function App() { 
 	
 
@@ -25,9 +27,10 @@ function App() {
       <Route path="/otpLogin" exact element={<Otp/>} />
       <Route path="/otp" exact element={<OtpPage/>} />
       <Route path='*' element={<PageNotFound/>}/>
-	
-		
-		
+      <Route path="/profile" exact element={<Profile />} />
+			<Route path="/editProfile" exact element={<Profileedit/>} />
+			<Route path="/MovieDetails/:id" element={<Detail/> } />
+      <Route path="/" element={<Navigate replace to="/login" />} />
       </Routes>
     </div>
   );

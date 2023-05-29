@@ -14,7 +14,8 @@ import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import axios from "../../utils/axios";
 import {
-  
+  getAllCitys,
+  getAllTheater,
   getMovies,
   searchMovie,
 } from "../../utils/Constants";
@@ -34,6 +35,7 @@ const Search = styled("div")(({ theme }) => ({
   },
   marginLeft: 0,
   width: "100%",
+  height:"50px",
   [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing(1),
     width: "auto",
@@ -54,6 +56,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
+    fontSize: "28px",
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
     width: "100%",
@@ -87,18 +90,56 @@ const Header = () => {
   const { pathname } = useLocation();
   const headerRef = useRef(null);
   const active = headerNav.findIndex((e) => e.path === pathname);
-  const dispatch = useDispatch();
   const [movies, setMovies] = useState([]);
 
   const [searchKey, setSearchKeyy] = useState("");
+  const [Theater, setTheater] = useState([]);
+  const [citys, setCity] = useState([]);
+
   const generateError = (error) =>
-  toast.error(error, {
-    position: "top-right",
-  });
+    toast.error(error, {
+      position: "top-right",
+    });
+
+  useEffect(() => {
+    try {
+      async function getAllTheaters() {
+        await axios
+          .get(getAllTheater)
+          .then(({ data }) => {
+            setTheater(data);
+          })
+          .catch((error) => {
+            if (error.response) {
+              generateError(error.response.data.message);
+            } else {
+              generateError("Network error. Please try again later.");
+            }
+          });
+      }
+      getAllTheaters();
+    } catch (error) {
+      if (
+        error.response &&
+        error.response.status >= 400 &&
+        error.response.status <= 500
+      ) {
+        generateError(error.response.data.message);
+      }
+    }
+  }, []);
+
+  const [selectedCity, setSelectedCity] = useState("");
   const [selectedMovie, setSelectedMovie] = useState("");
+
+  const handleCityChange = (event, value) => {
+    setSelectedCity(value);
+  };
+
   const handleMovieChange = (event, value) => {
     setSelectedMovie(value);
   };
+
   const searchBy = (e) => {
     let key = e.target.value;
     if (!key) {
@@ -119,14 +160,14 @@ const Header = () => {
     }
   };
 
- 
+  const dispatch = useDispatch();
   function handleLogout() {
     Swal.fire({
       title: "Are you sure?",
       text: "You want to Logout this page!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "black",
+      confirmButtonColor: "green",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, logout",
       background: "black",
@@ -164,7 +205,23 @@ const Header = () => {
         }
       });
   };
- 
+  useEffect(() => {
+    const getAllCity = () => {
+      axios
+        .get(getAllCitys)
+        .then((response) => {
+          setCity(response.data);
+        })
+        .catch((error) => {
+          if (error.response) {
+            generateError(error.response.data.message);
+          } else {
+            generateError("Network error. Please try again later.");
+          }
+        });
+    };
+    getAllCity();
+  }, []);
 
   const [movie, getAllMovie] = useState([]);
   const movieTitles = movie.map((m) => m.title);
@@ -187,18 +244,6 @@ const Header = () => {
         }
       });
   };
-
-
-
-
-
-
-
-
-
-
-
-
 
   useEffect(() => {
     const shrinkHeader = () => {
@@ -231,8 +276,8 @@ const Header = () => {
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
-        
-           
+              onChange={(e) => setSearchKeyy(e.target.value)}
+              value={searchKey}
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
             />

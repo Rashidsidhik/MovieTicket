@@ -2,7 +2,6 @@ import "./sidebar.scss";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import MovieIcon from "@mui/icons-material/Movie";
-import CreditCardIcon from "@mui/icons-material/CreditCard";
 import TheatersIcon from "@mui/icons-material/Theaters";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import { Button } from "@mui/material";
@@ -12,12 +11,9 @@ import { DarkModeContext } from "../../context/darkModeContext";
 import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setLogout } from "../../Redux/store";
-import BookOnlineIcon from "@mui/icons-material/BookOnline";
-import ChatIcon from "@mui/icons-material/Chat";
-import Badge from "@mui/material/Badge";
 import Swal from "sweetalert2";
 import axios from "../../utils/axios";
-import Tooltip from "@mui/material/Tooltip";
+import CreditCardIcon from "@mui/icons-material/CreditCard";
 
 
 import { toast, ToastContainer } from "react-toastify";
@@ -49,9 +45,8 @@ const Sidebar = () => {
         }
       });
   }
-  const token = useSelector((state) => state.token);
-  const [read, getRead] = useState([]);
-  const [unmessage, setUnMessage] = useState([]);
+ 
+  
 
   // Map over the unread messages to get their text content
 
@@ -101,7 +96,21 @@ const Sidebar = () => {
     <span>THEATER</span>
   </li>
 </Link>
-         
+<p className="title">POSTER MANAGMENT</p>
+          <Link to="/addPoster" style={{ textDecoration: "none" }}>
+            <li>
+              <CreditCardIcon className="icon" />
+              <span>ADD POSTER</span>
+            </li>
+          </Link>
+
+          <br />
+          <Link style={{ textDecoration: "none" }} to="/listPoster">
+            <li>
+              <MovieIcon className="icon" />
+              <span>POSTER</span>
+            </li>
+          </Link>   
 
           <p className="title">MOVIE MANAGMENT</p>
           <Link style={{ textDecoration: "none" }} to="/movieList">

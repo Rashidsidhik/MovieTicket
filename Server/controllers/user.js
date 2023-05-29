@@ -5,6 +5,7 @@ const Movie = require("../models/Movie");
 const jwt = require("jsonwebtoken");
 const userotp = require("../models/userOtp");
 const nodemailer = require("nodemailer");
+const poster = require("../models/Poster");
 //Email configuration
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -182,6 +183,121 @@ module.exports = {
       }
     } catch (error) {
       res.status(400).json({ message: "Invalid Details", error });
+    }
+  },
+  getAllPoster: async (req, res) => {
+    try {
+      const Allposter = await poster.find().sort({ createdAt: -1 });
+      res.json(Allposter);
+    } catch (error) {
+      res.status(500).send({ message: "Internal Server Error" + error });
+    }
+  },
+  addprofileinfo: async (req, res) => {
+    const userId = req.body.userId;
+    delete req.body.userId;
+    const { username, phone, place, city, pincode, imageUrl, address, email } =
+      req.body.application;
+
+    try {
+      const update = await User.findOneAndUpdate(
+        { _id: Object(userId) },
+        {
+          username: username,
+          email: email,
+          phone: phone,
+          place: place,
+          city: city,
+          pincode: pincode,
+          imageUrl: imageUrl,
+          address: address,
+        },
+        { new: true }
+      );
+      res.status(200).json({ message: "Sucess", update });
+    } catch (error) {
+      res.status(500).json({ message: "something went wrong" + error });
+    }
+  },
+  getMovie: async (req, res) => {
+    const movieId = req.params.id;
+    try {
+      const movies = await Movie.findOne({ _id: Object(movieId) });
+      res.json(movies);
+    } catch (error) {
+      res.status(500).json({ message: "something went wrong" + error });
+    }
+  },
+  addReview: async (req, res) => {
+    try {
+      const { movieId, rating, message, userEmail } = req.body;
+
+      if (!movieId) {
+        return res.status(400).json({ message: "Movie ID is missing" });
+      }
+      const user = await User.findOne({ email: userEmail });
+      if (!user) {
+        return res.status(400).json({ message: "User not found" });
+      }
+
+      const review = {
+        userName: user.username,
+        rating,
+        message,
+        date: new Date(),
+      };
+
+      const movie = await Movie.findByIdAndUpdate(
+        { _id: movieId },
+        { $push: { Review: review } },
+        { new: true }
+      );
+
+      if (!movie) {
+        return res.status(400).json({ message: "Movie not found" });
+      }
+      res.json({ movie });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "something went wrong" + error });
+    }
+  },
+  getReview: async (req, res) => {
+    try {
+      let id = req.params.id;
+
+      const data = await Movie.findOne({ _id: id });
+
+      res.status(200).json(data?.Review?.reverse());
+    } catch (error) {}
+  },
+  deleteReview: async (req, res) => {
+    let date = req.params.date;
+    let id = req.params.id;
+
+    try {
+      if (!id) {
+        res.status(400).json({ message: "Missing id parameter" });
+        return;
+      }
+      const review = await Movie.updateOne(
+        { _id: Object(id) },
+        { $pull: { Review: { date: new Date(date) } } },
+        { new: true }
+      );
+      const updated = await Movie.findOne({ _id: Object(id) });
+
+      res.status(200).json(updated);
+    } catch (error) {
+      res.status(500).json({ message: "something went wrong" + error });
+    }
+  },
+  searchMovie: async (req, res) => {
+    try {
+      const movie = await Movie.find({ title: { $regex: req.params.key } });
+      res.status(200).json({ message: "Sucess", movie });
+    } catch (error) {
+      res.status(500).json({ message: "something went wrong" + error });
     }
   },
 };

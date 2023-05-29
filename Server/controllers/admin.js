@@ -3,6 +3,7 @@ const { Admin, validate } = require("../models/admin");
 const Movie = require("../models/Movie");
 const { User } = require("../models/user");
 const { Theater } = require("../models/Theater");
+const poster = require("../models/Poster");
 const bcrypt = require("bcrypt");
 module.exports = {
   adminSignup: async (req, res) => {
@@ -234,6 +235,38 @@ module.exports = {
       const movies = await Movie.findOne({ _id: Object(movieId) });
 
       res.json(movies);
+    } catch (error) {
+      res.status(500).send({ message: "Internal Server Error" + error });
+    }
+  },
+  addPoster: async (req, res) => {
+    try {
+      const newPoster = new poster({
+        posterImageUrl: req.body.PosterImageUrl,
+        PosterUrl: req.body.PosterUrl,
+      });
+      const savedPoster = await newPoster.save();
+      const Allposter = await poster.find().sort({ createdAt: -1 });
+
+      res.json({ Allposter, status: true });
+    } catch (error) {
+      res.status(500).send({ message: "Internal Server Error" + error });
+    }
+  },
+  getAllPoster: async (req, res) => {
+    try {
+      const Allposter = await poster.find().sort({ createdAt: -1 });
+      res.json(Allposter);
+    } catch (error) {
+      res.status(500).send({ message: "Internal Server Error" + error });
+    }
+  },
+  deletePoster: async (req, res) => {
+    let id = req.params.id;
+    try {
+      const data = await poster.findByIdAndRemove({ _id: id });
+      const Allposter = await poster.find().sort({ createdAt: -1 });
+      res.status(200).json(Allposter);
     } catch (error) {
       res.status(500).send({ message: "Internal Server Error" + error });
     }
