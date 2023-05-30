@@ -17,6 +17,7 @@ import EditMovie from "./components/EditMovie/EditMovie";
 import AddPoster from "./pages/AddPoster/Poster";
 import PosterList from "./components/list/list";
 import EditPoster from "./components/EditPoster/EditPoster";
+import TheaterView from "./pages/TheaterList/TheaterView";
 function App() {
   const { darkMode } = useContext(DarkModeContext);
   const token = useSelector(state=>state.token)
@@ -46,6 +47,7 @@ function App() {
             <Route path="/editPoster/:id" element={<EditPoster />} />
           <Route path="/addPoster" element={<AddPoster />} />
           <Route path="/listPoster" element={<PosterList />} />
+          <Route path="/view/:id" element={<TheaterView />} />
           </Routes>
           
  

@@ -11,11 +11,14 @@ import Login from './pages/Login/Login';
 import Signup from './pages/Signup/Signup';
 import Home from './pages/Home/Home';
 import New from "./pages/TheaterApplication/New";
+import Single from "./pages/single/Single";
 import 'react-toastify/dist/ReactToastify.css';
-
-
-
-
+import ApplicatioEdit from "./components/ApplicatioEdit/ApplicatioEdit";
+import PageNotFound from "./PageNotFound";
+import Screen from "./pages/Screen/Screen";
+import AddScreen from "./pages/AddScreen/AddScreen";
+import AddDetails from './pages/AddDetails/AddDetails'
+import EditSreen from "./components/editSreen/EditScreen";
 
 
 
@@ -41,10 +44,12 @@ function App() {
             <Route path="/signup" element={!token ? <Signup/>: <Navigate to="/" />} />
             <Route  path="/" element={token ? <Home />: <Navigate to="/login" />} />
             <Route path="/application" element={<New/>}/>
-         
-          
-   
-      
+            <Route path="/EditApplication" element={<ApplicatioEdit/>}/>
+            <Route path="/screen" element={<Screen/>}/>
+            <Route path="/addscreens" element={<AddScreen/>}/>
+            <Route path="/editSreen/:id" element={<EditSreen/>}/>
+            <Route path="/addTheaterDetails/:id" element={<AddDetails/>}/>
+            <Route path='*' element={<PageNotFound/>}/>
           </Routes>
           
  

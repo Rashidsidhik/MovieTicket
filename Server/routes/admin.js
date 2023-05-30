@@ -16,6 +16,9 @@ const {
   addPoster,
   getAllPoster,
   deletePoster,
+  getOneTheater,
+  approve,
+  reject,
 } = require("../controllers/admin");
 const { Admin } = require("../models/admin");
 const router = express.Router();
@@ -35,4 +38,7 @@ router.get("/getMovie/:id",verifyToken, getMovie);
 router.post("/addPoster",verifyToken, addPoster); 
 router.get("/getAllPoster",verifyToken, getAllPoster);
 router.delete("/deletePoster/:id", verifyToken, deletePoster); 
+router.get("/getOneTheater/:id", getOneTheater);
+router.patch("/approveTheater/:id",verifyToken, approve); 
+router.patch("/rejectTheater/:id",verifyToken, reject); 
 module.exports = router;

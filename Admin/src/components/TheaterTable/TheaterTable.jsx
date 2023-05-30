@@ -171,7 +171,7 @@ const TheaterTable = () => {
                       </Button>
                     </TableCell>
                   </Link>
-                 
+                  {info?.application ? (
                     <TableCell align="left">
                       <Button
                         onClick={() => {
@@ -197,8 +197,8 @@ const TheaterTable = () => {
 
                       <></>
                     </TableCell>
-                  
-                  
+                  ) : null}
+                  {info?.application ? (
                     <TableCell align="left">
                       <>
                         {
@@ -226,8 +226,8 @@ const TheaterTable = () => {
                         }
                       </>
                     </TableCell>
-                 
-                 
+                  ) : null}
+                  {info?.application ? (
                     <TableCell className="tableCell">
                       {info?.isApproved === true ? (
                         <Button variant="outlined" color="primary">
@@ -235,11 +235,11 @@ const TheaterTable = () => {
                         </Button>
                       ) : (
                         <Button variant="outlined" color="error">
-                         pending
+                          is Rejected
                         </Button>
                       )}
                     </TableCell>
-                 
+                  ) : null}
                 </TableRow>
               ))
             ) : (

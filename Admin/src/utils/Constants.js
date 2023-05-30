@@ -18,4 +18,5 @@ export const getMovie = "api/admin/getMovie";
 export const movieEditPost = "api/admin/editMovie";
 export const PosterPost= "api/admin/addPoster";
 export const getAllPoster= "api/admin/getAllPoster";
-export const deletePoster = "api/admin/deletePoster";
+export const deletePoster = "api/admin/deletePoster"; 
+export const getOneTheater = "api/admin/getOneTheater";

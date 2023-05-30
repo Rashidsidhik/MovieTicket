@@ -271,4 +271,65 @@ module.exports = {
       res.status(500).send({ message: "Internal Server Error" + error });
     }
   },
+  getOneTheater: async (req, res) => {
+    try {
+      const theater = await Theater.findById(req.params.id);
+      if (!theater) {
+        return res.status(404).json({ message: "Theater not found" });
+      }
+      console.error(theater);
+      res.json(theater);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server error" });
+    }
+  },
+  approve: async (req, res) => {
+    const pageNo = req.query.page;
+    const options = {
+      page: Number(pageNo) ?? 1,
+      limit: 3,
+      projection: {
+        password: 0,
+      },
+    };
+    try {
+      let id = req.params.id;
+      const user = await Theater.findByIdAndUpdate(
+        { _id: Object(id) },
+        { $set: { isApproved: true } }
+      );
+      const companyData = await Theater.paginate({}, options);
+      res.json(companyData);
+
+    
+    } catch (error) {
+      res.status(500).send({ message: "Internal Server Error" + error });
+      //try later
+    }
+  },
+
+  reject: async (req, res) => {
+    const pageNo = req.query.page;
+    const options = {
+      page: Number(pageNo) ?? 1,
+      limit: 3,
+      projection: {
+        password: 0,
+      },
+    };
+    try {
+      let id = req.params.id;
+
+      const user = await Theater.findByIdAndUpdate(
+        { _id: Object(id) },
+        { $set: { isApproved: false } }
+      );
+      const companyData = await Theater.paginate({}, options);
+      res.json(companyData);
+    } catch (error) {
+      res.status(500).send({ message: "Internal Server Error" + error });
+      //try later
+    }
+  },
 };

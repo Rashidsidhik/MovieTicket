@@ -1,6 +1,10 @@
 import "./sidebar.scss";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import FitScreenIcon from "@mui/icons-material/FitScreen";
+import { useEffect } from "react";
+import { useState } from "react";
+import axios from "../../utils/axios";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import StoreIcon from "@mui/icons-material/Store";
@@ -19,7 +23,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { setLogout } from "../../Redux/store";
 import { Button } from "@mui/material";
 import Swal from "sweetalert2";
+import {
+  getOneTheater,
+  
+} from "../../utils/Constants";
 const Sidebar = () => {
+  const theater = useSelector((state) => state.theater);
+  const [theaters, setTheater] = useState([]);
+  const theaterId = theater?._id;
+  const { dispatch } = useContext(DarkModeContext);
   const dispatchs = useDispatch();
   function handleLogout() {
     Swal.fire({
@@ -36,7 +48,39 @@ const Sidebar = () => {
       }
     });
   }
-  const { dispatch } = useContext(DarkModeContext);
+  const generateError = (error) =>
+  toast.error(error, {
+    position: "top-right",
+  });
+
+useEffect(() => {
+  const getTheater = () => {
+    try {
+      axios
+        .get(`${getOneTheater}/${theaterId}`)
+        .then((response) => {
+          setTheater(response.data);
+        })
+        .catch((error) => {
+          if (error.response) {
+            generateError(error.response.data.message);
+          } else {
+            generateError("Network error. Please try again later.");
+          }
+        });
+    } catch (error) {
+      if (
+        error.response &&
+        error.response.status >= 400 &&
+        error.response.status <= 500
+      ) {
+        generateError(error.response.data.message);
+      }
+    }
+  };
+  getTheater();
+}, []);
+ 
   return (
     <div className="sidebar">
     <div className="top">
@@ -66,7 +110,20 @@ const Sidebar = () => {
           </li>
         </Link>
         <br />
-
+        {theaters?.isApproved && (
+            <div>
+              <p className="title">THEATER MANAGEMENT</p>
+              <br />
+              <Link to="/screen" style={{ textDecoration: "none" }}>
+                <li>
+                  <FitScreenIcon className="icon" />
+                  <span>SCREEN</span>
+                </li>
+              </Link>
+              <br />
+             
+            </div>
+          )}
        
 
         <li>

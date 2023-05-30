@@ -20,6 +20,7 @@ const New = () => {
   const theater = useSelector((state) => state.theater);
 
   const theaterId = theater?._id;
+  console.log(theaterId)
   const token = useSelector((state) => state.token);
 
   const [info, setInfo] = useState();
@@ -37,6 +38,7 @@ const New = () => {
         },
       })
       .then((response) => {
+        
         setInfo(response.data);
       })
       .catch((error) => {
@@ -182,7 +184,7 @@ const New = () => {
 
   return (
     <>
-      {theater?.application ? (
+     {theater?.application ? (
         <div className="single">
           <Sidebar />
           <div className="singleContainer">
@@ -249,9 +251,9 @@ const New = () => {
           </div>
         </div>
       ) : (
-        <div className="new">
+        <div className="single">
           <Sidebar />
-          <div className="newContainer">
+          <div className="singleContainer">
             <Navbar />
             <div className="top">
               <h1>APPLICATION</h1>
@@ -297,7 +299,7 @@ const New = () => {
                     <label>STATE</label>
                     <input
                       type="text"
-                      placeholder="ENTER  STATE"
+                      placeholder="ENETR  STATE"
                       {...register("state", {
                         required: true,
                       })}
@@ -327,7 +329,7 @@ const New = () => {
                     <label>PLACE</label>
                     <input
                       type="text"
-                      placeholder="ENTER THEATER PLACE"
+                      placeholder="ENETR THEATERB PLACE"
                       {...register("place", {
                         required: true,
                         pattern: /^[^\s]+(?:$|.*[^\s]+$)/,
