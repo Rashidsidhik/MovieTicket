@@ -92,6 +92,7 @@ module.exports = {
     }
   },
   addscreens: async (req, res) => {
+    console.log(">>>>>>>>>>>>>>>>>>>>>>>><<<<<<<")
     const { datas, userId } = req.body;
 
     try {
@@ -190,7 +191,7 @@ module.exports = {
     }
   },
   addShow: async (req, res) => {
-    console.log(">>>>>>>>>>>><<<<<<<<<<<<<");
+    console.log(req.body);
     try {
       const { datas, screenName } = req.body;
       const theaterId = req.body.theaterId;
@@ -321,6 +322,7 @@ module.exports = {
     }
   },
   getscreen: async (req, res) => {
+    console.log(">>>>>>>>><<<<<<<<<<<<<")
     try {
       const theatreId = req.params.id;
       const screeninfo = await Theater.findOne({ _id: theatreId });

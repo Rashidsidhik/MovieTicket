@@ -1,12 +1,17 @@
-import "./AddDetails.scss";
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import axios from "../../utils/axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addShow,getscreen, postScreenInfo } from "../../utils/Constants";
+import {
+  addShow,
+  editSreenShow,
+  getscreens,
+  postScreenInfo,
+} from "../../utils/Constants";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -15,29 +20,48 @@ import Select from "@mui/material/Select";
 import { getMovies } from "../../utils/Constants";
 import { useCallback } from "react";
 import { setTheater } from "../../Redux/store";
-import { toast, ToastContainer } from "react-toastify";
 import Selects from "react-select";
 
-const timeOptions = [
-  { value: "10.00 AM", label: "10.00 AM" },
-  { value: "12.35 PM", label: "12.35 PM" },
-  { value: "4.00 PM", label: "4.00 PM" },
-  { value: "7.30 PM", label: "7.30 PM" },
-  { value: "10.30 PM", label: "10.30 PM" },
-];
-
 const AddScreen = () => {
-  const [ShowTimes, setShowTimes] = useState([
-    timeOptions[0],
-    timeOptions[1],
-    timeOptions[2],
-  ]);
+  const { id: show } = useParams();
 
-  const handleTimingsChange = (selectedOptions) => {
-    setShowTimes(selectedOptions);
-  };
+  const token = useSelector((state) => state.token);
+  const theaterinfo = useSelector((state) => state.theater);
+
+  let screenDetails = null;
+
+  for (let scr of theaterinfo.screen) {
+    if (scr.screenname == show) {
+      screenDetails = scr;
+      break;
+    }
+  }
+
+  const moviName = screenDetails.show[0].moviename;
+
+  const [moviename, setMoviename] = useState(screenDetails.show[0].moviename);
+  const [ticketPrice, setTicketPrice] = useState(
+    theaterinfo.screen[0].ticketPrice
+  );
+  // const [ShowTimes, setShowTimes] = useState(screenDetails.show[0].time);
+  const allTimes = screenDetails?.show[0]?.time || [];
+
+  const [ShowTimes, setShowTimes] = useState(allTimes);
+
   const { id } = useParams();
   const screenName = id;
+
+  const handleTimingsChange = (selectedOptions) => {
+    const selectedTimes = selectedOptions.map((option) => option.value);
+    setShowTimes(selectedTimes);
+  };
+  const timeOptions = [
+    { value: "10.00 AM", label: "10.00 AM" },
+    { value: "12.35 PM", label: "12.35 PM" },
+    { value: "4.00 PM", label: "4.00 PM" },
+    { value: "7.30 PM", label: "7.30 PM" },
+    { value: "10.30 PM", label: "10.30 PM" },
+  ];
 
   const [movies, getAllMovie] = useState([]);
   useEffect((key) => {
@@ -64,28 +88,19 @@ const AddScreen = () => {
       });
   };
 
-  const [screen, setScreen] = useState([]);
+  // const [screen, setScreen] = useState([]);
 
-  useEffect(() => {
-    getscreen();
-  }, []);
+  // useEffect(() => {
+  //   getscreen();
+  // }, []);
 
-  const getscreen = useCallback(async () => {
-    const theatreId = theater._id;
+  // const getscreen = useCallback(async () => {
+  //   const theatreId = theater._id;
 
-    axios
-      .get(`${getscreen}/${theatreId}`)
-      .then((response) => {
-        setScreen(response.data.screen);
-      })
-      .catch((error) => {
-        if (error.response) {
-          generateError(error.response.data.message);
-        } else {
-          generateError("Network error. Please try again later.");
-        }
-      });
-  });
+  //   axios.get(`${getscreens}/${theatreId}`).then((response) => {
+  //     setScreen(response.data.screen);
+  //   });
+  // });
 
   const dispatch = useDispatch();
 
@@ -97,7 +112,6 @@ const AddScreen = () => {
 
   const theater = useSelector((state) => state.theater);
   const theaterId = theater._id;
-
   const generateError = (error) =>
     toast.error(error, {
       position: "top-right",
@@ -110,10 +124,8 @@ const AddScreen = () => {
     formState: { errors },
     reset,
   } = useForm();
-  const token = useSelector((state) => state.token);
 
   const onSubmit = async (data) => {
-    console.log("<<<<<<<<<<<<object>>>>>>>>>>>>")
     data.ShowTimes = ShowTimes;
     const formData = new FormData();
     const datas = {
@@ -126,8 +138,10 @@ const AddScreen = () => {
 
     axios
       .post(
-        addShow,
-        { datas, theaterId, screenName },
+        editSreenShow + `/${theaterId}/${screenName}/${moviName}`,
+        {
+          datas,
+        },
         {
           headers: {
             "Content-Type": "application/json",
@@ -136,11 +150,11 @@ const AddScreen = () => {
         }
       )
       .then(async (response) => {
-        dispatch(setTheater({ theater: response.data.updatedTheater }));
+        dispatch(setTheater({ theater: response.data }));
 
-        if (response.data.status) {
+        if (response.data) {
           toast.success(
-            `Screen added Succsessfully`,
+            `Screen info added Succsessfully`,
             { theme: "light" },
             {
               position: "top-right",
@@ -158,6 +172,11 @@ const AddScreen = () => {
           generateError("Network error. Please try again later.");
         }
       });
+  };
+
+  const handleSelectChange = (event) => {
+    handleChange(event);
+    setMoviename(event.target.value);
   };
 
   return (
@@ -179,14 +198,14 @@ const AddScreen = () => {
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
-                      value={age}
+                      defaultValue={screenDetails?.show[0].moviename}
                       {...register("moviename", {
                         required: true,
                         maxLength: 100,
                         pattern: /^[^\s]+(?:$|.*[^\s]+$)/,
                       })}
                       label="Age"
-                      onChange={handleChange}
+                      onChange={handleSelectChange}
                     >
                       {movies.map((obj, i) => {
                         return (
@@ -194,11 +213,6 @@ const AddScreen = () => {
                         );
                       })}
                     </Select>
-                    <span style={{ color: "red" }} className="text-danger">
-                      {errors.moviename?.type === "required" && (
-                        <span>moviename is required</span>
-                      )}
-                    </span>
                   </FormControl>
                 </Box>
               </div>
@@ -208,13 +222,16 @@ const AddScreen = () => {
                   <input
                     type="number"
                     className="formInput"
-                    placeholder="TICKET PRICE"
+                    placeholder="TICKET PERICE"
+                    value={ticketPrice}
+                    defaultValue={screenDetails?.show[0].ticketPrice}
+                    onChange={(event) => setTicketPrice(event.target.value)}
                     {...register("ticketPrice", {
                       required: true,
                     })}
                   />
-                  <span style={{ color: "red" }} className="text-danger">
-                    {errors.ticketPrice?.type === "required" && (
+                  <span className="text-danger">
+                    {errors.rows?.type === "required" && (
                       <span>TICKET PRICE is required</span>
                     )}
                   </span>
@@ -227,16 +244,20 @@ const AddScreen = () => {
                     Movie timings
                   </label>
                   <Selects
-                    value={ShowTimes}
+                    defaultValue={allTimes?.map((time) => ({ time }))}
                     onChange={handleTimingsChange}
                     isMulti
                     name="timings"
                     options={timeOptions}
+                    value={ShowTimes?.map((time) => ({
+                      value: time,
+                      label: time,
+                    }))}
                     className="w-full text-black"
                     classNamePrefix="select"
                   />
                   {ShowTimes.length === 0 ? (
-                    <div className="text-red-500">
+                    <div style={{ color: "red" }} className="text-red-500">
                       Please select at least one timing
                     </div>
                   ) : null}

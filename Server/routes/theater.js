@@ -25,7 +25,7 @@ router.get("/getAllTheater",getAllTheater);
 router.post("/addscreen", verifyToken, addscreens); 
 router.post("/Screeninfo", verifyToken, getMovies); 
 router.post("/editScreen", verifyToken, editScreen); 
-router.post("/addShow", verifyToken, addShow); 
+router.post("/addShow", verifyToken,addShow); 
 router.post("/editSreenShow/:id/:screenName/:moviName",verifyToken, editSreenShow); 
 router.get("/getAdmin",verifyToken, getAdmin);
 router.get("/listMoveTheater",verifyToken, getMovies);

@@ -53,6 +53,7 @@ module.exports = {
   },
 
   addmovies: async (req, res) => {
+    console.log(req.body)
     try {
       const movieExists = await Movie.findOne({
         title: req.body.title,

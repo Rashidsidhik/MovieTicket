@@ -8,10 +8,20 @@ import Navbar from "../../components/navbar/Navbar";
 import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUploadOutlined";
 import { MoviesPost } from "../../utils/Constants";
 import { useSelector } from "react-redux";
+import Select from "react-select";
 import "./new.scss";
 const New = () => {
   const token = useSelector((state) => state.token);
-
+  const genreOptions = [
+    { value: "ACTION", label: "ACTION" },
+    { value: "COMEDY", label: "COMEDY" },
+    { value: "DRAMA", label: "DRAMA" },
+    { value: "CRIME", label: "CRIME" },
+    { value: "FAMILY", label: "FAMILY" },
+    { value: "HORROR", label: "HORROR" },
+    // Add more options as needed
+  ];
+  
   const generateError = (error) =>
     toast.error(error, {
       position: "top-right",
@@ -23,6 +33,7 @@ const New = () => {
     formState: { errors },
     reset,
   } = useForm();
+  const [selectedGenre, setSelectedGenre] = useState(null);
   const [imageSelected, setImageSelected] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const acceptedFileTypes = ["image/jpeg", "image/png", "image/jpg"];
@@ -48,6 +59,7 @@ const New = () => {
   };
 
   const onSubmit = async (data) => {
+    console.log(data)
     if (!imageSelected) {
       setErrorMessage("Please select an image");
       return;
@@ -72,7 +84,7 @@ const New = () => {
           const datas = {
             title: data.title,
             description: data.description,
-            genre: data.genre,
+            genre: selectedGenre.value,
             director: data.director,
             duration: data.duration,
             imageUrl: imageUrl,
@@ -210,33 +222,17 @@ const New = () => {
                 </span>
               </div>
               <div className="formInput">
-                <label>Genre</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Genre"
-                  {...register("genre", {
-                    required: true,
-                    maxLength: 10,
-                    pattern: /^[^\s\d]+(?:$|.*[^\s]+$)/,
-                  })}
-                />
-                <span style={{ color: "red" }} className="text-danger">
-                  {errors.genre?.type === "required" && (
-                    <span style={{ color: "red" }}>Genre is required</span>
-                  )}
-                  {errors.genre?.type === "maxLength" && (
-                    <span style={{ color: "red" }}>
-                      Genre must less than 10 Character
-                    </span>
-                  )}
-                  {errors.genre?.type === "pattern" && (
-                    <span style={{ color: "red" }}>
-                      Genre accept alphabetic characters
-                    </span>
-                  )}
-                </span>
-              </div>
+  <label>Genre</label>
+  <Select
+    value={selectedGenre}
+    onChange={(selectedOption) => setSelectedGenre(selectedOption)} // Update the selectedGenre state with the selected option
+    options={genreOptions}
+    placeholder="Select genre"
+  />
+  {errors.genre && (
+    <span style={{ color: "red" }}>Genre is required</span>
+  )}
+</div>
               <div className="formInput">
                 <label>Director</label>
                 <input

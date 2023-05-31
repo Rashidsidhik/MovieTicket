@@ -16,6 +16,6 @@ export const addscreenpost = "api/theater/addscreen";
 export const addShow= "api/theater/addShow";
 export const getMovies= "api/theater/listMoveTheater";
 export const getAllTheater= "api/theater/getAllTheater";
-//
+export const editSreenShow= "api/theater/editSreenShow";
 
 

@@ -19,7 +19,7 @@ import Screen from "./pages/Screen/Screen";
 import AddScreen from "./pages/AddScreen/AddScreen";
 import AddDetails from './pages/AddDetails/AddDetails'
 import EditSreen from "./components/editSreen/EditScreen";
-
+import EditSreenShow from './components/EditScreeShow/EditScreenShow'
 
 
 function App() {
@@ -49,6 +49,7 @@ function App() {
             <Route path="/addscreens" element={<AddScreen/>}/>
             <Route path="/editSreen/:id" element={<EditSreen/>}/>
             <Route path="/addTheaterDetails/:id" element={<AddDetails/>}/>
+            <Route path="/editSreenShow/:id" element={<EditSreenShow/>}/>
             <Route path='*' element={<PageNotFound/>}/>
           </Routes>
           
