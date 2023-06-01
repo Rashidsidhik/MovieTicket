@@ -4,7 +4,7 @@ import "./Home.scss";
 import MovieList from "../../components/movie-list/MovieList";
 import Banner from "../../components/Banner/Banner";
 import Footer from "../../components/Footer/Footer";
-
+import Premier from '../../components/Premier/Premier';
 const Home = () => {
   return (
     <>
@@ -24,6 +24,7 @@ const Home = () => {
       <div className="movieslist">
         <MovieList />
       </div>
+      <Premier/>
       <Footer />
     </>
   );

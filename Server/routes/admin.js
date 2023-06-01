@@ -47,7 +47,7 @@ router.get("/getOneTheater/:id", getOneTheater);
 router.patch("/approveTheater/:id",verifyToken, approve); 
 router.patch("/rejectTheater/:id",verifyToken, reject); 
 router.post("/addgenre", verifyToken, addgenre); 
-router.get("/getgenre", verifyToken, getgenre);
+router.get("/getgenre", getgenre);
 router.delete("/deleteGenre/:id", verifyToken, deleteGenre); 
 router.get("/getGenreone/:id",verifyToken, getGenreone);
 router.post("/editGenre",verifyToken, editGenre);

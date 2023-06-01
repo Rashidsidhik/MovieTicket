@@ -358,7 +358,7 @@ module.exports = {
     }
   },
   getgenre: async (req, res) => {
-   
+   console.log(">>>>>>>>>>>")
     try {
       const genreres = await genre.find().sort("-createdAt");
 

@@ -15,7 +15,7 @@ import Detail from './Pages/detail/Detail';
 function App() { 
 	
 
-
+ 
 
 	
   return (

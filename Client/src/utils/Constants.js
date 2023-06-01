@@ -17,3 +17,4 @@ export const getAllReview = "api/users/getAllReview";
 export const deleteReview = "api/users/deleteReview";
 export const getAllTheater= "api/users/getAllTheater";
 export const getAllCitys = "api/users/getAllCity";
+export const getgenre= "api/admin/getgenre";
