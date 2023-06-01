@@ -9,7 +9,10 @@ import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUpload
 import { Toaster } from "react-hot-toast";
 import { getMovie, movieEditPost } from "../../utils/Constants";
 import { useSelector } from "react-redux";
+import { getgenre } from "../../utils/Constants";
+import Select from "react-select";
 const EditMovie = () => {
+  const [selectedGenre, setSelectedGenre] = useState(null);
   const [movies, setMovies] = useState([]);
   const [title, setTitle] = useState(movies.title);
   const [description, setDescription] = useState(movies.description);
@@ -19,7 +22,30 @@ const EditMovie = () => {
   const [duration, SetDuration] = useState(movies.duration);
   const token = useSelector((state) => state.token);
   const { id: movieId } = useParams();
-
+  const [genrelist, getAllgenre] = useState([]);
+  useEffect((key) => {
+    getAllgenreList();
+  }, []);
+  const getAllgenreList = () => {
+    axios
+    .get(getgenre, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        console.log(response,">>>>>>>>>>>>>>")
+        getAllgenre(response.data);
+      })
+      .catch((error) => {
+        if (error.response) {
+          generateError(error.response.data.message);
+        } else {
+          generateError("Network error. Please try again later.");
+        }
+      });
+  };
   useEffect(
     (key) => {
       getUsersList();
@@ -93,7 +119,7 @@ const EditMovie = () => {
         formData.append("upload_preset", "ml_default");
         reset();
         const response = await axios.post(
-          "https://api.cloudinary.com/v1_1/dwkom79iv/image/upload",
+          "https://api.cloudinary.com/v1_1/dlul6yynv/image/upload",
           formData,
           { withCredentials: false }
         );
@@ -106,7 +132,7 @@ const EditMovie = () => {
       const datas = {
         title: data.title,
         description: data.description,
-        genre: data.genre,
+        genre: selectedGenre.value,
         director: data.director,
         duration: data.duration,
         imageUrl: imageUrl,
@@ -213,17 +239,20 @@ const EditMovie = () => {
                 />
               </div>
               <div className="formInput">
-                <label>Genre</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  defaultValue={movies.genre}
-                  onChange={(event) => setGenre(event.target.value)}
-                  placeholder="Genre"
-                  {...register("genre")}
-                  required
-                />
-              </div>
+  <label>Genre</label>
+  <Select
+  value={selectedGenre}
+  onChange={(selectedOption) => setSelectedGenre(selectedOption)}
+  options={genrelist.map((genre) => ({ value: genre.genre, label: genre.genre }))}
+  defaultValue={{ value:movies.genre, label: movies.genre }} // Set the defaultValue to movies.genre
+  placeholder={movies.genre}
+/>
+
+
+  {errors.genre && (
+    <span style={{ color: "red" }}>Genre is required</span>
+  )}
+</div>
               <div className="formInput">
                 <label>Director</label>
                 <input

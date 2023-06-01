@@ -19,6 +19,11 @@ const {
   getOneTheater,
   approve,
   reject,
+  addgenre,
+  getgenre,
+  deleteGenre,
+  getGenreone,
+  editGenre
 } = require("../controllers/admin");
 const { Admin } = require("../models/admin");
 const router = express.Router();
@@ -41,4 +46,9 @@ router.delete("/deletePoster/:id", verifyToken, deletePoster);
 router.get("/getOneTheater/:id", getOneTheater);
 router.patch("/approveTheater/:id",verifyToken, approve); 
 router.patch("/rejectTheater/:id",verifyToken, reject); 
+router.post("/addgenre", verifyToken, addgenre); 
+router.get("/getgenre", verifyToken, getgenre);
+router.delete("/deleteGenre/:id", verifyToken, deleteGenre); 
+router.get("/getGenreone/:id",verifyToken, getGenreone);
+router.post("/editGenre",verifyToken, editGenre);
 module.exports = router;

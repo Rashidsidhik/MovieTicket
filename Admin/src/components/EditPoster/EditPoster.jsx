@@ -67,7 +67,7 @@ const EditPoster = () => {
     reset();
     axios
       .post(
-        "https://api.cloudinary.com/v1_1/dwkom79iv/image/upload",
+        "https://api.cloudinary.com/v1_1/dlul6yynv/image/upload",
         formData,
         { withCredentials: false }
       )

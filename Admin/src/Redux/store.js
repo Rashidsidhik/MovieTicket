@@ -44,6 +44,9 @@ export const authSlice = createSlice({
     setMove:(state,action)=>{
       state.movie=action.payload.movie
   },
+  setGenre: (state, action) => {
+    state.genre = action.payload.genre;
+  },
   },
 });
 
@@ -57,5 +60,6 @@ export const {
   setMessages,
   setCount,
   setMove,
+  setGenre,
 } = authSlice.actions;
 export default authSlice.reducer;

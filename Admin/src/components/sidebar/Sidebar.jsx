@@ -113,6 +113,14 @@ const Sidebar = () => {
           </Link>   
 
           <p className="title">MOVIE MANAGMENT</p>
+          <Link style={{ textDecoration: "none" }} to="/addgenre">
+            <li>
+              <MovieIcon className="icon" />
+              <span>ADD GENRE</span>
+            </li>
+          </Link>
+
+          <br />
           <Link style={{ textDecoration: "none" }} to="/movieList">
             <li>
               <MovieIcon className="icon" />

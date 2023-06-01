@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect,useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "../../utils/axios";
 import { useNavigate } from "react-router-dom";
@@ -8,19 +8,36 @@ import Navbar from "../../components/navbar/Navbar";
 import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUploadOutlined";
 import { MoviesPost } from "../../utils/Constants";
 import { useSelector } from "react-redux";
+import { getgenre } from "../../utils/Constants";
 import Select from "react-select";
 import "./new.scss";
 const New = () => {
   const token = useSelector((state) => state.token);
-  const genreOptions = [
-    { value: "ACTION", label: "ACTION" },
-    { value: "COMEDY", label: "COMEDY" },
-    { value: "DRAMA", label: "DRAMA" },
-    { value: "CRIME", label: "CRIME" },
-    { value: "FAMILY", label: "FAMILY" },
-    { value: "HORROR", label: "HORROR" },
-    // Add more options as needed
-  ];
+ 
+  const [genre, getAllgenre] = useState([]);
+  useEffect((key) => {
+    getAllgenreList();
+  }, []);
+  const getAllgenreList = () => {
+    axios
+    .get(getgenre, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        console.log(response,">>>>>>>>>>>>>>")
+        getAllgenre(response.data);
+      })
+      .catch((error) => {
+        if (error.response) {
+          generateError(error.response.data.message);
+        } else {
+          generateError("Network error. Please try again later.");
+        }
+      });
+  };
   
   const generateError = (error) =>
     toast.error(error, {
@@ -224,11 +241,12 @@ const New = () => {
               <div className="formInput">
   <label>Genre</label>
   <Select
-    value={selectedGenre}
-    onChange={(selectedOption) => setSelectedGenre(selectedOption)} // Update the selectedGenre state with the selected option
-    options={genreOptions}
-    placeholder="Select genre"
-  />
+  value={selectedGenre}
+  onChange={(selectedOption) => setSelectedGenre(selectedOption)}
+  options={genre.map((genre) => ({ value: genre.genre, label: genre.genre }))} // Map the genres array to options with value and label properties
+  placeholder="Select genre"
+/>
+
   {errors.genre && (
     <span style={{ color: "red" }}>Genre is required</span>
   )}

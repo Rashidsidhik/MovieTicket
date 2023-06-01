@@ -4,6 +4,7 @@ const Movie = require("../models/Movie");
 const { User } = require("../models/user");
 const { Theater } = require("../models/Theater");
 const poster = require("../models/Poster");
+const genre = require("../models/genre");
 const bcrypt = require("bcrypt");
 module.exports = {
   adminSignup: async (req, res) => {
@@ -333,4 +334,85 @@ module.exports = {
       //try later
     }
   },
+  addgenre: async (req, res) => {
+    console.log(req.body,">>>>>>>>>>>>>>>>>>>>")
+    try {
+      const genreExists = await genre.findOne({
+        genre: req.body.datas.genrename,
+      });
+
+      if (genreExists) {
+        return res.status(400).json({ message: "Genre already exists" });
+      }
+    
+      const newgenre = new genre({
+        genre: req.body.datas.genrename,
+        
+      });
+      const savedgenre = await newgenre.save();
+      const Allgenre = await genre.find().sort({ createdAt: -1 });
+
+      res.json({ Allgenre, status: true });
+    } catch (error) {
+      res.status(500).send({ message: "Internal Server Error" + error });
+    }
+  },
+  getgenre: async (req, res) => {
+   
+    try {
+      const genreres = await genre.find().sort("-createdAt");
+
+      res.json(genreres);
+    } catch (error) {
+      res.status(500).send({ message: "Internal Server Error" + error });
+    }
+  },
+  deleteGenre: async (req, res) => {
+    console.log(req.params.id,">>>>>>1<<<<<<<<<<<<<<<<<<<")
+    let id = req.params.id;
+
+    try {
+      const data = await genre.findOneAndRemove({ genre: id });
+      const update=await genre.find().sort("-createdAt");
+      res.status(200).json(update);
+      
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: "Internal Server Error" + error });
+    }
+  },
+  getGenreone: async (req, res) => {
+    
+    const genreId = req.params.id;
+    try {
+      const genres = await genre.findOne({ genre:genreId });
+      
+      res.json(genres);
+    } catch (error) {
+      res.status(500).send({ message: "Internal Server Error" + error });
+    }
+  },
+  editGenre: async (req, res) => {
+    console.log(req.body, ">>>>>>>>>>>>>>>>>>>>");
+    const genreId = req.body.genrenameId;
+    try {
+      const updatedGenre = await genre.findByIdAndUpdate(
+        genreId,
+        { genre: req.body.datas.genrename },
+        { new: true }
+      );
+  
+      if (!updatedGenre) {
+        return res.status(400).json({ message: "Genre not found" });
+      }
+      
+      const Allgenre = await genre.find().sort({ createdAt: -1 });
+  
+      res.json({ Allgenre, status: true });
+    } catch (error) {
+      res.status(500).send({ message: "Internal Server Error" + error });
+    }
+  },
+  
+  
 };

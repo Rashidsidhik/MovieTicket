@@ -11,6 +11,8 @@ import Login from './pages/Login/Login';
 import Single from "./pages/userList/Single";
 import New from "./pages/ADDMOVIE/New";
 import Home from './pages/Home/Home';
+import AddGenre from "./pages/AddGenre/AddGenre";
+import EditGenre from "./components/editGenre/editGenre";
 import MovieList from "./pages/MovieList/MovieList";
 import Singles from "./pages/TheaterList/TheaterList";
 import EditMovie from "./components/EditMovie/EditMovie";
@@ -18,6 +20,7 @@ import AddPoster from "./pages/AddPoster/Poster";
 import PosterList from "./components/list/list";
 import EditPoster from "./components/EditPoster/EditPoster";
 import TheaterView from "./pages/TheaterList/TheaterView";
+import PageNotFound from "./PageNotFound";
 function App() {
   const { darkMode } = useContext(DarkModeContext);
   const token = useSelector(state=>state.token)
@@ -40,6 +43,8 @@ function App() {
           <Route path="/users-list" element={<Single />} />
             <Route  path="/" element={token ? <Home />: <Navigate to="/login" />} />
             <Route path="/addMovies" element={<New />} />
+            <Route path="/addgenre" element={<AddGenre />} />
+            <Route path="/editGenre/:id" element={<EditGenre/>}/>
             <Route path="/movieList" element={<MovieList />} />
             <Route path="/users-list" element={<Single />} />
             <Route path="/theater-list" element={<Singles />} />
@@ -48,6 +53,7 @@ function App() {
           <Route path="/addPoster" element={<AddPoster />} />
           <Route path="/listPoster" element={<PosterList />} />
           <Route path="/view/:id" element={<TheaterView />} />
+          <Route path="*" element={<PageNotFound />} />
           </Routes>
           
  
