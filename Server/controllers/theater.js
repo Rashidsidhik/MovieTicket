@@ -78,7 +78,7 @@ module.exports = {
         { $set: { application: req.body.application } }
       );
       const updated = await Theater.findOne({ _id: theaterId });
-      res.json({ id: info._id, status: true, updated });
+     res.json({ id: info._id, status: true, updated });
     } catch (error) {
       res.status(500).send({ message: "Internal Server Error" + error });
     }
@@ -92,7 +92,7 @@ module.exports = {
     }
   },
   addscreens: async (req, res) => {
-    console.log(">>>>>>>>>>>>>>>>>>>>>>>><<<<<<<")
+  
     const { datas, userId } = req.body;
 
     try {
@@ -191,7 +191,7 @@ module.exports = {
     }
   },
   addShow: async (req, res) => {
-    console.log(req.body);
+    
     try {
       const { datas, screenName } = req.body;
       const theaterId = req.body.theaterId;

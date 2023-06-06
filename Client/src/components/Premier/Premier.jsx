@@ -41,6 +41,12 @@ const Premier = () => {
     toast.error(error, {
       position: "top-right",
     });
+    const handleButtonClick = () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    };
   return (
     <>
       <div className="flex box-border  flex-col mt-36 justify-center items-center  h-[700px]. bg-gray-800 mb-20">
@@ -59,7 +65,7 @@ const Premier = () => {
                 <button
                   
                   className="bg-black text-white w-44 h-44 p-4 flex items-center justify-center font-semibold rounded-2xl uppercase"
-                >
+                  onClick={handleButtonClick}>
                   {screenObj.genre}
                 </button>
               </Link>

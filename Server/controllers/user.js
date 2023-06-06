@@ -300,4 +300,14 @@ module.exports = {
       res.status(500).json({ message: "something went wrong" + error });
     }
   },
+  categorymovie : async (req, res, next) => {
+    try {
+      var category = req.params.id
+      console.log(category,"*********************");
+      Movie.find({ genre: category }).then((response) => {
+        console.log(response);
+        res.json(response);
+      });
+    } catch (error) {}
+  },
 };

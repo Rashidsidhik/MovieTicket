@@ -251,9 +251,9 @@ const New = () => {
           </div>
         </div>
       ) : (
-        <div className="single">
+        <div className="new">
           <Sidebar />
-          <div className="singleContainer">
+          <div className="newContainer">
             <Navbar />
             <div className="top">
               <h1>APPLICATION</h1>

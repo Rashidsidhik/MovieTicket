@@ -12,6 +12,7 @@ import PageNotFound from './PageNotFound';
 import Profile from './Pages/Profile/Profile';
 import Profileedit from './components/Profileedit/Profileedit';
 import Detail from './Pages/detail/Detail';
+import Category from './Pages/Category/Category';
 function App() { 
 	
 
@@ -31,6 +32,7 @@ function App() {
 			<Route path="/editProfile" exact element={<Profileedit/>} />
 			<Route path="/MovieDetails/:id" element={<Detail/> } />
       <Route path="/" element={<Navigate replace to="/login" />} />
+      <Route path={"/categorymovie/:category"} element={<Category />} />
       </Routes>
     </div>
   );

@@ -15,7 +15,8 @@ const {
   addReview,
   getReview,
   deleteReview,
-  searchMovie
+  searchMovie,
+  categorymovie
 } = require("../controllers/user");
 const { User } = require("../models/user");
 const router = express.Router();
@@ -33,4 +34,5 @@ router.post("/reviews", verifyToken, addReview);
 router.delete("/deleteReview/:id/:date",verifyToken, deleteReview);
 router.get("/getAllReview/:id",verifyToken, getReview);
 router.get("/searchMovie/:key", searchMovie);
+router.get("/categorymovie/:id",categorymovie);
 module.exports = router;
