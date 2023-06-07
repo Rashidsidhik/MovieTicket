@@ -10,10 +10,10 @@ const BookingDetails = () => {
   let { id: movieId } = useParams();
 
   const image =
-    "https://a-static.besthdwallpaper.com/avengers-endgame-movie-wallpaper-2880x1800-25808_8.jpg";
+    "https://t3.ftcdn.net/jpg/03/17/79/66/360_F_317796693_B5yF8ybwUMb3MDhe6QQWGJKQYYNHfxKg.jpg";
 
   return (
-    <div style={{ backgroundColor: "black", paddingBottom: 20 }}>
+    <div style={{ backgroundColor: "rgb(87,168,204)", paddingBottom: 20 }}>
       <Navbar />
       <div
         className="bannner"

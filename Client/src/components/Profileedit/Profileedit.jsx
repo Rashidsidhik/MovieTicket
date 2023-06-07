@@ -119,7 +119,7 @@ const Profileedit = () => {
       <div className="newContainer">
         <div className="bottom">
           <div className="left">
-            <img 
+            <img className="imagepro"
               src={
                 imageSelected
                   ? URL.createObjectURL(imageSelected)

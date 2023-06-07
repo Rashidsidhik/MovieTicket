@@ -175,7 +175,7 @@ function PaymentsPage({ proceed, allinfo }) {
   };
 
   const STRIPE_PUBLISHABLE_KEY =
-    "  pk_test_51MrveKSEuSYAWHWKcIceVaOttrBepl1kgOwHCuv10hcZgpQ21aJIgFvkMw9QOOiau5HkTGxL6S03Zj9obusn5yjy00EOFuWjYJ";
+    "pk_test_51NGGAgSILY9DnJe4VlW3FsMtvCmzwoWswmOUxB1qAaR3C8fDkhxexUj55MPEjIvRLpWsdXzmugcUPpHQFrGoxJf700dbWMrSda";
 
   const stripeTestPromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
 
@@ -187,7 +187,7 @@ function PaymentsPage({ proceed, allinfo }) {
         onClose={handleClose}
         TransitionComponent={Transition}
       >
-        <AppBar style={{ position: "relative", backgroundColor: "black" }}>
+        <AppBar style={{ position: "relative", backgroundColor: "rgb(39,42,44)" }}>
           <Toolbar>
             <Typography variant="h6" style={{ flex: 1 }}>
               <svg height="40" width="150" color="white">

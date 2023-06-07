@@ -27,7 +27,7 @@ function SecondSection() {
   return (
     <div>
       <div
-        style={{ backgroundColor: "black", color: "white" }}
+        style={{ backgroundColor: "rgb(39,42,44)", color: "white" }}
         className={styles.summeryPart}
       >
         <div>Booking Summery</div>

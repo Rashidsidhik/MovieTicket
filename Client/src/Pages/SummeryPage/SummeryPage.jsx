@@ -54,11 +54,11 @@ export default function SummaryPage() {
   return (
     <div>
       <Navbar />
-      <div style={{ height: "800px", backgroundColor: "black" }}>
+      <div style={{ height: "800px", backgroundColor: "rgb(87,168,204)" }}>
         <div className={styles.container}>
           <img
             style={{ width: "600px" }}
-            src="https://st3.depositphotos.com/9881890/17595/i/450/depositphotos_175959862-stock-photo-excited-woman-glasses-big-basket.jpg"
+            src="https://media.gettyimages.com/id/157372958/photo/empty-movie-theater.jpg?s=612x612&w=gi&k=20&c=6bYRSXcNc-2oWFXqs2wVGZZhSpmtq7ZGWD4LV-fa56A="
             alt=""
           />
 
