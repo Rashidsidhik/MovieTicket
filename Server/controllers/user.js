@@ -8,6 +8,8 @@ const nodemailer = require("nodemailer");
 const poster = require("../models/Poster");
 const { Theater } = require("../models/Theater");
 const Reservation = require("../models/ReservationModel");
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const generateQR = require("../utils/generateQr");
 //Email configuration
 const transporter = nodemailer.createTransport({
   service: "gmail",
