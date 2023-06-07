@@ -19,3 +19,7 @@ export const getAllTheater= "api/users/getAllTheater";
 export const getAllCitys = "api/users/getAllCity";
 export const getgenre= "api/admin/getgenre";
 export const categorymovie = "api/users/categorymovie";
+export const getScreenShows = "api/users/getScreenShows";
+export const seatReserved = "api/users/seatReserved";
+export const getQrcodes = "api/users/getQrcode"; 
+export const reservation = "api/users/reservation";  

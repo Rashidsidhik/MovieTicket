@@ -5,7 +5,7 @@
     height: 780px;
   
     .newContainer {
-      flex: 6;
+     margin-top: 120px;
   
       
       .bottom {
@@ -90,5 +90,11 @@
       border-radius: 5px;
       text-align: center;
     }
+     .itemImg {
+              width: 400px;
+              height: 400px;
+              border-radius: 50%;
+              object-fit: cover;
+            }
   }
   

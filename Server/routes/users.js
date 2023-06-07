@@ -16,7 +16,12 @@ const {
   getReview,
   deleteReview,
   searchMovie,
-  categorymovie
+  categorymovie,
+  getAllCity,
+  getScreenShows,
+  seatReserved,
+  reservation,
+  getQrCode
 } = require("../controllers/user");
 const { User } = require("../models/user");
 const router = express.Router();
@@ -35,4 +40,9 @@ router.delete("/deleteReview/:id/:date",verifyToken, deleteReview);
 router.get("/getAllReview/:id",verifyToken, getReview);
 router.get("/searchMovie/:key", searchMovie);
 router.get("/categorymovie/:id",categorymovie);
+router.get("/getAllCity", getAllCity);
+router.get("/getScreenShows/:id/:title",verifyToken, getScreenShows);
+router.get("/seatReserved/:id/:time/:movieId/:date",verifyToken, seatReserved);
+router.post("/reservation/:id/:total/", verifyToken, reservation);
+router.get("/getQrcode",verifyToken, getQrCode);
 module.exports = router;

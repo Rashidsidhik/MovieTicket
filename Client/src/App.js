@@ -13,8 +13,11 @@ import Profile from './Pages/Profile/Profile';
 import Profileedit from './components/Profileedit/Profileedit';
 import Detail from './Pages/detail/Detail';
 import Category from './Pages/Category/Category';
+import BookingDetails from './Pages/BookingDetails/BookingDetails';
+import Seating from './components/Seating/Seating';
+import SummaryPage from './Pages/SummeryPage/SummeryPage';
 function App() { 
-	
+	const token = useSelector(state=>state.token)
 
  
 
@@ -33,6 +36,9 @@ function App() {
 			<Route path="/MovieDetails/:id" element={<Detail/> } />
       <Route path="/" element={<Navigate replace to="/login" />} />
       <Route path={"/categorymovie/:category"} element={<Category />} />
+      <Route path="/BokingDetails/:id" element={!token ? <Login /> :<BookingDetails/> } />
+      <Route path="/booktickets/seats" element={<Seating/> } />
+      <Route path="/booktickets/summary" element={<SummaryPage/> } />
       </Routes>
     </div>
   );

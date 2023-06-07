@@ -56,6 +56,13 @@ export const authSlice = createSlice({
     setTempemail: (state, action) => {
       state.tempemail = action.payload.tempemail;
     },
+    setDates:(state, action) => {
+      state.date = action.payload.date;
+    },
+    handleSelectDate: (state, action) => {
+      state.date = action.payload.date;
+      state.day = action.payload.day;
+    },
   },
 });
 
@@ -71,6 +78,8 @@ export const {
   setSearchKey,
   setMovies,
   setOtp,
-  setTempemail
+  setTempemail,
+  setDates,
+  handleSelectDate
 } = authSlice.actions;
 export default authSlice.reducer;

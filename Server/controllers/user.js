@@ -6,6 +6,8 @@ const jwt = require("jsonwebtoken");
 const userotp = require("../models/userOtp");
 const nodemailer = require("nodemailer");
 const poster = require("../models/Poster");
+const { Theater } = require("../models/Theater");
+const Reservation = require("../models/ReservationModel");
 //Email configuration
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -309,5 +311,164 @@ module.exports = {
         res.json(response);
       });
     } catch (error) {}
+  },
+  getAllCity: async (req, res) => {
+    try {
+      const citys = await Theater.distinct("application.city");
+      res.json({ citys });
+    } catch (error) {
+      res.status(500).json({ message: "something went wrong" + error });
+    }
+  },
+  getScreenShows: async (req, res) => {
+    const movieId = req.params.id;
+    const movieTitle = req.params.title;
+
+    // const releaseDate = req.params.releasedate;
+    try {
+      const data = await Theater.aggregate([
+        {
+          $match: {
+            "screen.show.moviename": movieTitle,
+          },
+        },
+        { $unwind: "$screen" },
+        {
+          $match: {
+            "screen.show.moviename": movieTitle,
+          },
+        },
+        {
+          $project: {
+            _id: 1,
+            "application.theatername": 1,
+            "application.city": 1, // add city field to the projection
+            "screen.screenname": 1,
+            showInfo: {
+              $filter: {
+                input: "$screen.show",
+                as: "show",
+                cond: {
+                  $and: [{ $eq: ["$$show.moviename", movieTitle] }],
+                },
+              },
+            },
+          },
+        },
+        {
+          $group: {
+            _id: {
+              theaterId: "$_id",
+              applicationName: "$application.theatername",
+              screenname: "$screen.screenname",
+              city: "$application.city", // add city field to the group
+            },
+            showInfo: { $push: "$showInfo" },
+          },
+        },
+        {
+          $group: {
+            _id: "$_id.applicationName",
+            screens: {
+              $push: {
+                theaterId: "$_id.theaterId",
+                screenname: "$_id.screenname",
+                city: "$_id.city", // add city field to the output
+                showInfo: "$showInfo",
+              },
+            },
+          },
+        },
+      ]);
+      res.json({ data });
+    } catch (error) {
+      res.status(500).json({ message: "something went wrong" + error });
+    }
+  },
+  seatReserved: async (req, res) => {
+    const id = req.params.id;
+
+    const time = req.params.time;
+    const date = req.params.date;
+    const movieId = req.params.movieId;
+
+    try {
+      const data = await Reservation.findOne({
+        // theaterId: '642284895888e345c92c3d1f',
+        // startAt: '09:00',
+        theaterId: id,
+        startAt: time,
+        movieId: movieId,
+        showDate: date,
+        seats: { $elemMatch: { isReserved: true } },
+      });
+
+      res.status(200).json(data);
+    } catch (error) {
+      res.status(500).json({ message: "something went wrong" + error });
+    }
+  },
+  reservation: async (req, res) => {
+    const { id } = req.params;
+    const { total } = req.params;
+    const {
+      ticketPrice,
+      userId,
+      Email,
+      userName,
+      showDate,
+      bookedDate,
+      paymentId,
+      movieName,
+      theaterId,
+      cinemaScreen,
+      startAt,
+      seats,
+      theaterName,
+      TikectCount,
+      movieId,
+    } = req.body;
+
+    try {
+      const payment = await stripe.paymentIntents.create({
+        amount: total,
+        currency: "INR",
+        description: "Movie+",
+        payment_method: id,
+        confirm: true,
+      });
+      const datas = await Reservation(req.body.data).save();
+      const qrcode = await generateQR(
+        "http//:localhost:3000/reservation/" + datas._id
+      );
+      await Reservation.findByIdAndUpdate(datas._id, {
+        $set: { qrcode: qrcode },
+      });
+      res.json({ status: "payment successfull", datas, qrcode });
+    } catch (error) {
+      res.status(500).json({ message: "something went wrong" + error });
+    }
+  },
+  getQrCode: async (req, res) => {
+    const { movieId } = req.params;
+    try {
+      Reservation.findOne(
+        { movieId, qrcode: { $exists: true } },
+        (err, reservation) => {
+          if (err) {
+            console.error(err);
+            return;
+          }
+
+          if (!reservation) {
+            return;
+          }
+
+          const qrcode = reservation.qrcode;
+        }
+      );
+    } catch (error) {
+      res.status(500).json({ message: "something went wrong" + error });
+    }
   },
 };
