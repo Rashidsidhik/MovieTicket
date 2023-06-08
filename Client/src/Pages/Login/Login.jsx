@@ -3,7 +3,7 @@ import axios from "../../utils/axios";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./styles.module.scss";
 import {  googleSignup,loginPost } from "../../utils/Constants";
-import { setLogin } from "../../Redux/store";
+import { setLogin,setWishlist } from "../../Redux/store";
 import { useDispatch } from "react-redux";
 import { useCookies } from "react-cookie";
 import React from "react";
@@ -86,6 +86,9 @@ const Login = () => {
       try {
         const url = loginPost;
         const { data } = await axios.post(url, values);
+        const updatedWishlist = data.user.wishlist;
+        console.log(updatedWishlist,">>>>in login")
+      dispatch(setWishlist(updatedWishlist));
         dispatch(setLogin({ user: data.user, token: data.token }));
         setTimeout(() => {
           navigate("/");

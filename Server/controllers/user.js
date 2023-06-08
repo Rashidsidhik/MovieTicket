@@ -62,7 +62,7 @@ module.exports = {
         return res.status(401).send({ message: "Invalid Emailor Password" });
 
       var token = user.generateAuthToken();
-
+     
       res.status(200).json({ token, user });
     } catch (error) {
       res.status(500).send({ message: "Internal Server Error" + error });
@@ -473,4 +473,53 @@ module.exports = {
       res.status(500).json({ message: "something went wrong" + error });
     }
   },
+  addWishlist: async (req, res) => {
+    console.log(req.body,"FDDDDDDDDDDDDDDDDDDDDDDDDDDGF")
+    const userId = req.body.userId;
+    const { movieId } = req.body;
+  
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+  
+      // Add movieId to the wishlist array
+      user.wishlist.push(movieId);
+      
+      // Save the updated user document
+      const updatedUser = await user.save();
+      const { wishlist } = updatedUser;
+      res.status(200).json({ message: "Success",wishlist});
+    } catch (error) {
+      res.status(500).json({ message: "Something went wrong", error });
+    }
+  },
+  removeWishlist: async (req, res) => {
+    console.log(req.body,">>>>>>>>>>>>>>>>>>>>>>>>>")
+    
+    const userId = req.body.userId;
+    const { movieId } = req.body;
+  
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+     // Convert movieId to string before filtering
+     const stringMovieId = movieId.toString();
+
+     // Remove the movieId from the wishlist array
+     user.wishlist = user.wishlist.filter(id => id.toString() !== stringMovieId);
+ 
+      
+      // Save the updated user document
+      const updatedUser = await user.save();
+      const { wishlist } = updatedUser;
+      res.status(200).json({ message: "Success",wishlist});
+    } catch (error) {
+      res.status(500).json({ message: "Something went wrong", error });
+    }
+  },
+  
 };

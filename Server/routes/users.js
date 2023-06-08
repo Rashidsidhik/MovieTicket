@@ -21,7 +21,9 @@ const {
   getScreenShows,
   seatReserved,
   reservation,
-  getQrCode
+  getQrCode,
+  addWishlist,
+  removeWishlist
 } = require("../controllers/user");
 const { User } = require("../models/user");
 const router = express.Router();
@@ -45,4 +47,6 @@ router.get("/getScreenShows/:id/:title",verifyToken, getScreenShows);
 router.get("/seatReserved/:id/:time/:movieId/:date",verifyToken, seatReserved);
 router.post("/reservation/:id/:total/", verifyToken, reservation);
 router.get("/getQrcode",verifyToken, getQrCode);
+router.post("/addWishlist",verifyToken,addWishlist);
+router.post("/removeWishlist",verifyToken,removeWishlist);
 module.exports = router;

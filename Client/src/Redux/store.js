@@ -9,6 +9,7 @@ const initialState = {
   selectedMovie: null,
   setBookedDetails: null,
   getSeatInformation: null,
+  wishlist:[],
 };
 
 export const authSlice = createSlice({
@@ -19,9 +20,14 @@ export const authSlice = createSlice({
       state.mode = state.mode === "light" ? "dark" : "light";
     },
     setLogin: (state, action) => {
-      state.user = action.payload.user;
-      state.token = action.payload.token;
+      const { user, token } = action.payload;
+      state.user = user;
+      state.token = token;
+      if (user && user.wishlist) {
+        state.wishlist = user.wishlist;
+      }
     },
+    
     setLogout: (state) => {
       state.user = null;
       state.token = null;
@@ -63,6 +69,9 @@ export const authSlice = createSlice({
       state.date = action.payload.date;
       state.day = action.payload.day;
     },
+    setWishlist: (state, action) => {
+      state.wishlist = action.payload.wishlist;
+    },
   },
 });
 
@@ -80,6 +89,7 @@ export const {
   setOtp,
   setTempemail,
   setDates,
-  handleSelectDate
+  handleSelectDate,
+  setWishlist
 } = authSlice.actions;
 export default authSlice.reducer;

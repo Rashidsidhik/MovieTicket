@@ -23,3 +23,5 @@ export const getScreenShows = "api/users/getScreenShows";
 export const seatReserved = "api/users/seatReserved";
 export const getQrcodes = "api/users/getQrcode"; 
 export const reservation = "api/users/reservation";  
+export const addWishlist= "api/users/addWishlist";
+export const removeWishlist= "api/users/removeWishlist";

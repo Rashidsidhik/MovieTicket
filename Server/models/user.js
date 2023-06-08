@@ -13,7 +13,8 @@ const userSchema = new mongoose.Schema({
 	address: { type: String, required: false },
 	email: { type: String, required: true },
 	password: { type: String, required: true },
-	Block:{type:Boolean,default:false}
+	Block:{type:Boolean,default:false},
+	wishlist:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Movie' }]
 	// verified: { type: Boolean, default: false },
 });
 

@@ -18,7 +18,7 @@ import Seating from './components/Seating/Seating';
 import SummaryPage from './Pages/SummeryPage/SummeryPage';
 function App() { 
 	const token = useSelector(state=>state.token)
-
+  // if (token) store.dispatch(getWishlistIds());
  
 
 	
