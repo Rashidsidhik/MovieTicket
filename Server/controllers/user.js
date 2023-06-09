@@ -306,13 +306,34 @@ module.exports = {
   },
   categorymovie : async (req, res, next) => {
     try {
-      var category = req.params.id
-      console.log(category,"*********************");
+      var { id: category, userId } = req.params;
+      console.log(category,"*********************",userId);
+      if (category === "FAVOURITE MOVIES") {
+        User.findOne({ _id:userId }, "wishlist")
+        .populate({
+          path: "wishlist",
+          model: "movies",
+          select: "-Review", // Exclude the "Review" field from the populated movie objects
+        })
+        .exec((err, user) => {
+          if (err) {
+            console.log(err);
+            return res.status(500).json({ error: "Internal server error" });
+          }
+          if (!user) {
+            return res.status(404).json({ error: "User not found" });
+          }
+          const favoriteMovies = user.wishlist;
+          console.log(favoriteMovies);
+          res.json(favoriteMovies);
+        });
+      } else {
       Movie.find({ genre: category }).then((response) => {
         console.log(response);
         res.json(response);
       });
-    } catch (error) {}
+    }
+  } catch (error) {}
   },
   getAllCity: async (req, res) => {
     try {

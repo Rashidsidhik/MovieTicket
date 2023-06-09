@@ -339,6 +339,14 @@ const Header = () => {
                   <h4>BOOKING</h4>
                 </Link>
               </MenuItem>
+              <MenuItem style={{ backgroundColor: "black", color: "white" }}>
+                <Link
+                  style={{ textDecoration: "none", color: "white" }}
+                  to="/categorymovie/FAVOURITE MOVIES"
+                >
+                  <h4>FAVOURITE MOVIES</h4>
+                </Link>
+              </MenuItem>
               <MenuItem
                 style={{ backgroundColor: "black", color: "white" }}
                 onClick={handleClose}

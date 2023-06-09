@@ -3,11 +3,11 @@ import React from "react";
 import "./Movie-category.scss";
 import axios from "../../utils/axios";
 import { Link } from "react-router-dom";
-import { getMovies } from "../../utils/Constants";
+import { getMovies,addWishlist,removeWishlist } from "../../utils/Constants";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setMovies } from "../../Redux/store";
+import { setMovies,setLogin } from "../../Redux/store";
 import { toast, ToastContainer } from "react-toastify";
 import { useParams } from 'react-router-dom';
 import { categorymovie } from "../../utils/Constants";
@@ -24,9 +24,13 @@ import {
 } from "@mui/material";
 import { Favorite } from "@mui/icons-material";
 const Moviecategory = (props) => {
+  const user = useSelector((state) => state.user);
+  const token = useSelector((state) => state.token);
+  const wishlist = useSelector((state) => state.user?.wishlist || []);
   const searchKey = useSelector((state) => state.searchKey);
   const [movies, getAllMovie] = useState([]);
   const dispatch = useDispatch();
+  const userId = user ? user._id : null;
   const { category } = useParams();
 
 
@@ -36,7 +40,7 @@ const Moviecategory = (props) => {
     });
   const getAllMovieList = () => {
     axios
-      .get(`${categorymovie}/${category}`)
+      .get(`${categorymovie}/${category}/${userId}`)
       .then((response) => {
         
 
@@ -53,6 +57,65 @@ const Moviecategory = (props) => {
   useEffect(() => {
     getAllMovieList();
   }, [getAllMovieList]);
+  const handleWishlist = (movieId, movieTitle) => {
+    if (wishlist.includes(movieId)){
+      axios
+      .post(removeWishlist, {
+        movieTitle,
+        movieId,
+        userId,
+      },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((response) => {
+        const updatedWishlist = response.data.wishlist;
+       console.log(updatedWishlist,">>>>>>>>>>>>>>>>>>>>>><<<<<okayy")
+       const updatedUser = {...user,wishlist:updatedWishlist };
+       dispatch(setLogin({ user:updatedUser, token:token }));
+
+      })
+      .catch((error) => {
+        if (error.response) {
+          generateError(error.response.data.message);
+        } else {
+          generateError("Network error. Please try again later.");
+        }
+      });
+    }  else {
+      axios
+        .post(addWishlist, {
+          movieTitle,
+          movieId,
+          userId,
+        },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then((response) => {
+          const updatedWishlist = response.data.wishlist;
+         console.log(updatedWishlist,">>>>>>>>>>>>>>>>>>>>>><<<<<okayy")
+         const updatedUser = {...user,wishlist:updatedWishlist };
+         dispatch(setLogin({ user:updatedUser, token:token }));
+  
+        })
+        .catch((error) => {
+          if (error.response) {
+            generateError(error.response.data.message);
+          } else {
+            generateError("Network error. Please try again later.");
+          }
+        });
+      }
+    };
   return (
     <>
       <div className="card-container">
@@ -124,6 +187,21 @@ const Moviecategory = (props) => {
                       </h5>
                     </Link>
                   </div>
+                  {user? (
+                    <IconButton
+                      onClick={(e) => {
+                        e.preventDefault(); // Prevent default navigation behavior
+                        handleWishlist(movie._id, movie.title);
+                      }}
+                      aria-label="add to favorites"
+                      color={wishlist.includes(movie._id) ? "error" : "primary"}
+                    >
+                      &nbsp; &nbsp;
+                      <Favorite />
+                    </IconButton>
+                  ) : (
+                    ""
+                  )}
                 </div>
               </Link>
             );

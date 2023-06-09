@@ -41,7 +41,7 @@ router.post("/reviews", verifyToken, addReview);
 router.delete("/deleteReview/:id/:date",verifyToken, deleteReview);
 router.get("/getAllReview/:id",verifyToken, getReview);
 router.get("/searchMovie/:key", searchMovie);
-router.get("/categorymovie/:id",categorymovie);
+router.get("/categorymovie/:id/:userId?",categorymovie);
 router.get("/getAllCity", getAllCity);
 router.get("/getScreenShows/:id/:title",verifyToken, getScreenShows);
 router.get("/seatReserved/:id/:time/:movieId/:date",verifyToken, seatReserved);
