@@ -77,7 +77,10 @@ const Moviecategory = (props) => {
        console.log(updatedWishlist,">>>>>>>>>>>>>>>>>>>>>><<<<<okayy")
        const updatedUser = {...user,wishlist:updatedWishlist };
        dispatch(setLogin({ user:updatedUser, token:token }));
-
+       toast.error("Movie removed from FAVOURITES!", {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 1000,
+      });
       })
       .catch((error) => {
         if (error.response) {
@@ -105,7 +108,10 @@ const Moviecategory = (props) => {
          console.log(updatedWishlist,">>>>>>>>>>>>>>>>>>>>>><<<<<okayy")
          const updatedUser = {...user,wishlist:updatedWishlist };
          dispatch(setLogin({ user:updatedUser, token:token }));
-  
+         toast.success("Movie added to FAVOURITES!", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1000,
+        });
         })
         .catch((error) => {
           if (error.response) {
