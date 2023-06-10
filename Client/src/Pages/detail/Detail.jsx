@@ -8,14 +8,21 @@ import axios from "../../utils/axios";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import Rating from "../../components/Rating/Rating";
 import ReviewModel from "../../components/Review/Review";
-import { useSelector } from "react-redux";
+import { setMovies, setWishlist,setLogin } from "../../Redux/store";
+import { useSelector,useDispatch } from "react-redux";
 import Button from "@mui/material/Button";
 import ShowReview from "../../components/Review/showReview";
 import { Box, Divider } from "@mui/material";
 import Swal from "sweetalert2";
-import { getAllReview, getMovie } from "../../utils/Constants";
+import { getAllReview, getMovie,addWishlist,removeWishlist } from "../../utils/Constants";
 import { toast, ToastContainer } from "react-toastify";
+import IconButton from "@mui/material/IconButton";
+import Favorite from "@mui/icons-material/Favorite";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 const Detail = () => {
+
+  const wishlist = useSelector((state) => state.user?.wishlist || []);
   let { id: movieId } = useParams();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
@@ -24,7 +31,8 @@ const Detail = () => {
   const [submit, setsubmit] = useState(false);
   const [review, setreview] = useState();
   const [movies, getMoviee] = useState([]);
-
+  const userId = user ? user._id : null;
+  const dispatch = useDispatch();
   const handleOpen = () => {
     if (user?.username) {
       setOpen(true);
@@ -104,7 +112,71 @@ const Detail = () => {
 
   const image =
     "https://t4.ftcdn.net/jpg/03/98/67/05/360_F_398670578_qfihCy61VOBGpuvWolQ8U87H2cqmeJ8L.jpg";
-
+    const handleWishlist = (movieId, movieTitle) => {
+      if (wishlist.includes(movieId)){
+        axios
+        .post(removeWishlist, {
+          movieTitle,
+          movieId,
+          userId,
+        },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then((response) => {
+          const updatedWishlist = response.data.wishlist;
+         console.log(updatedWishlist,">>>>>>>>>>>>>>>>>>>>>><<<<<okayy")
+         const updatedUser = {...user,wishlist:updatedWishlist };
+         dispatch(setLogin({ user:updatedUser, token:token }));
+         toast.error("Movie removed from FAVOURITES!", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1000,
+        });
+        })
+        .catch((error) => {
+          if (error.response) {
+            generateError(error.response.data.message);
+          } else {
+            generateError("Network error. Please try again later.");
+          }
+        });
+      }  else {
+        axios
+          .post(addWishlist, {
+            movieTitle,
+            movieId,
+            userId,
+          },
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+          .then((response) => {
+            const updatedWishlist = response.data.wishlist;
+           console.log(updatedWishlist,">>>>>>>>>>>>>>>>>>>>>><<<<<okayy")
+           const updatedUser = {...user,wishlist:updatedWishlist };
+           dispatch(setLogin({ user:updatedUser, token:token }));
+           toast.success("Movie added to FAVOURITES!", {
+            position: toast.POSITION.TOP_RIGHT,
+            autoClose: 1000,
+          });
+          })
+          .catch((error) => {
+            if (error.response) {
+              generateError(error.response.data.message);
+            } else {
+              generateError("Network error. Please try again later.");
+            }
+          });
+        }
+    };
   return (
     <div style={{ backgroundColor: "black" }}>
       <Navbar />
@@ -112,13 +184,29 @@ const Detail = () => {
         <div
           className="bannner"
           style={{ width: "100%", backgroundImage: `url(${image})` }}
+          
         ></div>
         <div className="mb-3 movie-content container">
           <div className="movie-content__poster">
             <div
               className="movie-content__poster__img"
               style={{ backgroundImage: `url(${movies?.imageUrl})` }}
-            ></div>
+            >         {user ? (
+              <IconButton
+                onClick={(e) => {
+                  e.preventDefault(); // Prevent default navigation behavior
+                  handleWishlist(movies._id, movies.title);
+                }}
+                className="wishlist-button"
+                aria-label="add to favorites"
+                color={wishlist.includes(movies._id) ? "error" : "primary"}
+              >
+                  {wishlist.includes(movies._id) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+              </IconButton>
+            ) : (
+              ""
+            )}
+            </div>
           </div>
           <div className="movie-content__info">
             <h1 className="title">{movies?.title}</h1>
@@ -139,6 +227,7 @@ const Detail = () => {
               )}
               <CastList />
             </div>
+   
             <div className="genres">
               <Link
                 to={`/BokingDetails/${movieId}`}

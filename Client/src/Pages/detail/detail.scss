@@ -29,7 +29,14 @@
         background-image: linear-gradient(to top, $body-bg, rgba($black, 0));
     }
 }
-
+.wishlist-button {
+    position: absolute;
+    top: -550px;
+    left: 10px;
+  }
+  .wishlist-button .MuiSvgIcon-root {
+    font-size: 32px; /* Adjust the font-size to increase/decrease the icon size */
+  }
 .movie-content {
     @include flex(flex-start, flex-start);
     // background-color: black;
