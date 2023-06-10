@@ -157,7 +157,21 @@ const MovieCard = (props) => {
                 <div
                   className="movie-card"
                   style={{ backgroundImage: `url(${movie.imageUrl})` }}
-                >
+                > {user? (
+                  <IconButton
+                    onClick={(e) => {
+                      e.preventDefault(); // Prevent default navigation behavior
+                      handleWishlist(movie._id, movie.title);
+                    }}
+                    aria-label="add to favorites"
+                    color={wishlist.includes(movie._id) ? "error" : "primary"}
+                  >
+                    &nbsp; &nbsp;
+                    <Favorite />
+                  </IconButton>
+                ) : (
+                  ""
+                )}
                   <div style={{ textAlign: "center" }}>
                     <Link
                       to={`/BokingDetails/${movie._id}`}
@@ -180,28 +194,14 @@ const MovieCard = (props) => {
                       </h5>
                     </Link>
                   </div>
-                  {user? (
-                    <IconButton
-                      onClick={(e) => {
-                        e.preventDefault(); // Prevent default navigation behavior
-                        handleWishlist(movie._id, movie.title);
-                      }}
-                      aria-label="add to favorites"
-                      color={wishlist.includes(movie._id) ? "error" : "primary"}
-                    >
-                      &nbsp; &nbsp;
-                      <Favorite />
-                    </IconButton>
-                  ) : (
-                    ""
-                  )}
+                 
 
                 </div>
               </Link>
             );
           })}
       </div>
-      <ToastContainer />
+     
     </>
   );
 };
