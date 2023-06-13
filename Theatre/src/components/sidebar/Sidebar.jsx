@@ -5,6 +5,8 @@ import FitScreenIcon from "@mui/icons-material/FitScreen";
 import { useEffect } from "react";
 import { useState } from "react";
 import axios from "../../utils/axios";
+import BookOnlineIcon from "@mui/icons-material/BookOnline";
+import PaymentIcon from "@mui/icons-material/Payment";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import StoreIcon from "@mui/icons-material/Store";
@@ -121,7 +123,22 @@ useEffect(() => {
                 </li>
               </Link>
               <br />
-             
+              <br />
+              <Link to="/BookingDetails" style={{ textDecoration: "none" }}>
+                <li>
+                  <BookOnlineIcon className="icon" />
+                  <span>BOOKING MANAGE</span>
+                </li>
+              </Link>
+              <br />
+              <br />
+              <Link to="/PaymentDetails" style={{ textDecoration: "none" }}>
+                <li>
+                  <PaymentIcon className="icon" />
+                  <span>PAYMENT MANAGE</span>
+                </li>
+              </Link>
+              <br />
             </div>
           )}
        

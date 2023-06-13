@@ -20,7 +20,10 @@ import AddScreen from "./pages/AddScreen/AddScreen";
 import AddDetails from './pages/AddDetails/AddDetails'
 import EditSreen from "./components/editSreen/EditScreen";
 import EditSreenShow from './components/EditScreeShow/EditScreenShow'
-
+import BookingList from "./components/BookingMnage/BookingList";
+import PaymentList from "./components/PaymentManage/PaymentList";
+import PaymentViewList from "./components/PaymentViewList/PaymentViewList";
+import BookingViewList from "./components/BookingViewList/BookingViewList";
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -50,6 +53,10 @@ function App() {
             <Route path="/editSreen/:id" element={<EditSreen/>}/>
             <Route path="/addTheaterDetails/:id" element={<AddDetails/>}/>
             <Route path="/editSreenShow/:id" element={<EditSreenShow/>}/>
+            <Route path="/BookingDetails" element={<BookingList/>}/>
+            <Route path="/PaymentDetails" element={<PaymentList/>}/>
+            <Route path="/Paymnetview/:id" element={<PaymentViewList/>}/>
+            <Route path="/Bookingview/:id" element={<BookingViewList/>}/>
             <Route path='*' element={<PageNotFound/>}/>
           </Routes>
           

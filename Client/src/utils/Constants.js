@@ -25,3 +25,5 @@ export const getQrcodes = "api/users/getQrcode";
 export const reservation = "api/users/reservation";  
 export const addWishlist= "api/users/addWishlist";
 export const removeWishlist= "api/users/removeWishlist";
+export const cancelTicket = "api/users/cancelTicket";
+export const BookingHitory = "api/users/history";

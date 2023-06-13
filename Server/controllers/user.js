@@ -542,5 +542,32 @@ module.exports = {
       res.status(500).json({ message: "Something went wrong", error });
     }
   },
-  
+  getUserHistory: async (req, res) => {
+    try {
+      let id = req.params.id;
+      Reservation.find({ userId: id })
+        .populate("movieId")
+        .sort({ bookedDate: -1 })
+        .exec((err, reservations) => {
+          if (err) {
+          } else {
+            res.status(200).json(reservations);
+          }
+        });
+    } catch (error) {
+      res.status(500).json({ message: "something went wrong" + error });
+    }
+  },
+  cancelTicket: async (req, res) => {
+    let id = req.params.id;
+
+    try {
+      const data = await Reservation.findByIdAndRemove({ _id: id });
+
+      res.status(200).json(data);
+    } catch (error) {
+      res.status(500).json({ message: "something went wrong" + error });
+    }
+  },
+
 };

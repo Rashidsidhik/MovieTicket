@@ -23,6 +23,8 @@ const {
   reservation,
   getQrCode,
   addWishlist,
+  getUserHistory,
+  cancelTicket,
   removeWishlist
 } = require("../controllers/user");
 const { User } = require("../models/user");
@@ -49,4 +51,6 @@ router.post("/reservation/:id/:total/", verifyToken, reservation);
 router.get("/getQrcode",verifyToken, getQrCode);
 router.post("/addWishlist",verifyToken,addWishlist);
 router.post("/removeWishlist",verifyToken,removeWishlist);
+router.get("/history/:id", verifyToken, getUserHistory);
+router.delete("/cancelTicket/:id", verifyToken, cancelTicket); 
 module.exports = router;

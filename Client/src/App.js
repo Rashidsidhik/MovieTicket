@@ -16,14 +16,15 @@ import Category from './Pages/Category/Category';
 import BookingDetails from './Pages/BookingDetails/BookingDetails';
 import Seating from './components/Seating/Seating';
 import SummaryPage from './Pages/SummeryPage/SummeryPage';
+import Ticket  from './components/OrderHistory/Ticket';
 function App() { 
 	const token = useSelector(state=>state.token)
   // if (token) store.dispatch(getWishlistIds());
  
-
+ 
 	
   return (
-    <div className="App">
+    <div className="App" >
       <Routes>
        <Route path="/" exact element={<Home />} />
 			<Route path="/signup" exact element={<Signup />} />
@@ -39,6 +40,7 @@ function App() {
       <Route path="/BokingDetails/:id" element={!token ? <Login /> :<BookingDetails/> } />
       <Route path="/booktickets/seats" element={<Seating/> } />
       <Route path="/booktickets/summary" element={<SummaryPage/> } />
+      <Route path="/booking" element={<Ticket/> } />
       </Routes>
     </div>
   );
