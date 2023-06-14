@@ -1,8 +1,4 @@
-
-
-
 import {  Routes, Route ,Navigate} from "react-router-dom";
-
 import "./style/dark.scss";
 import { useContext } from "react";
 import {useSelector} from 'react-redux';
@@ -11,12 +7,11 @@ import Login from './pages/Login/Login';
 import Signup from './pages/Signup/Signup';
 import Home from './pages/Home/Home';
 import New from "./pages/TheaterApplication/New";
-import Single from "./pages/single/Single";
 import 'react-toastify/dist/ReactToastify.css';
 import ApplicatioEdit from "./components/ApplicatioEdit/ApplicatioEdit";
 import PageNotFound from "./PageNotFound";
 import Screen from "./pages/Screen/Screen";
-import AddScreen from "./pages/AddScreen/AddScreen";
+import AddScreen from "./pages/AddScreen/AddScreen"; 
 import AddDetails from './pages/AddDetails/AddDetails'
 import EditSreen from "./components/editSreen/EditScreen";
 import EditSreenShow from './components/EditScreeShow/EditScreenShow'
@@ -28,20 +23,14 @@ import BookingViewList from "./components/BookingViewList/BookingViewList";
 function App() {
   const { darkMode } = useContext(DarkModeContext);
   const token = useSelector(state=>state.token)
-  const ProtectedRoute = ({ children }) => {
-    if (!token) {
-      return <Navigate to="/login" />;
-    }
-
-    return children;
-  };
+ 
 
 
   return (
     <div className={darkMode ? "app dark" : "app"}>
 
         
-          <Routes>
+          <Routes> 
               
           <Route path="/login" element={!token ? <Login /> : <Navigate to="/" />} />
             <Route path="/signup" element={!token ? <Signup/>: <Navigate to="/" />} />

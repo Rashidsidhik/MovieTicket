@@ -2,10 +2,13 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import "./home.scss";
 import Widget from "../../components/widget/Widget";
-import Featured from "../../components/featured/Featured";
-import Chart from "../../components/chart/Chart";
-import Table from "../../components/table/Table";
 
+import DailyRevenueGraph from "../../components/chart/dily/Daily";
+import { Button } from "@mui/material";
+import { Link } from "react-router-dom";
+import Year from "../../components/chart/Year/Year";
+import Weekly from "../../components/chart/Weekly/Weekly";
+import Month from "../../components/chart/Monthy/Month";
 const Home = () => {
   return (
     <div className="home">
@@ -13,18 +16,23 @@ const Home = () => {
       <div className="homeContainer">
         <Navbar />
         <div className="widgets">
-          <Widget type="user" />
           <Widget type="order" />
           <Widget type="earning" />
           <Widget type="balance" />
         </div>
+        <div style={{padding:"20px"}}>
+          <Link  style={{textDecoration:"none"}} to='/salesreport'>
+          <Button variant="contained">SALES REPORT</Button>
+          </Link>
+          </div>
+        
         <div className="charts">
-          <Featured />
-          <Chart title="Last 6 Months (Revenue)" aspect={2 / 1} />
+          <DailyRevenueGraph title="DAILY  BOOKING" aspect={2 / 1} />
+          <Weekly title="WEEKLY  BOOKING" aspect={2 / 1} />
         </div>
-        <div className="listContainer">
-          <div className="listTitle">Latest Transactions</div>
-          <Table />
+        <div className="charts">
+          <Month title="MONTHLY BOOKING" aspect={2 / 1} />
+          <Year title="YEARLY BOOKNIG" aspect={2 / 1} />
         </div>
       </div>
     </div>
@@ -32,3 +40,4 @@ const Home = () => {
 };
 
 export default Home;
+

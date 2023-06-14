@@ -23,7 +23,12 @@ const {
   getgenre,
   deleteGenre,
   getGenreone,
-  editGenre
+  editGenre,
+  AdmingetOnePaymentDetails,
+  AdmingetReservationDetails,
+  reservationDetails,
+  getDailyRevenue,
+  getOneDayRevenue
 } = require("../controllers/admin");
 const { Admin } = require("../models/admin");
 const router = express.Router();
@@ -51,4 +56,10 @@ router.get("/getgenre", getgenre);
 router.delete("/deleteGenre/:id", verifyToken, deleteGenre); 
 router.get("/getGenreone/:id",verifyToken, getGenreone);
 router.post("/editGenre",verifyToken, editGenre);
+router.get("/getOnePaymentDetailss/:id",verifyToken,AdmingetOnePaymentDetails);
+router.get("/reservationDetails",verifyToken, reservationDetails);
+router.get("/getDailyRevenue",verifyToken, getDailyRevenue);
+router.get("/getOneDayRevenue/:id",verifyToken, getOneDayRevenue);
+router.get("/ReservationDetailss/",verifyToken, AdmingetReservationDetails);
+
 module.exports = router;

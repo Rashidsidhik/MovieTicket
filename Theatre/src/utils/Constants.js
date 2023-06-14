@@ -20,3 +20,7 @@ export const editSreenShow= "api/theater/editSreenShow";
 export const ReservationDetailsOneTheater= "api/theater/ReservationDetailsOneTheater";
 export const getOnePaymentDetails= "api/theater/getOnePaymentDetails";
 export const getOneBookinDetails= "api/theater/getOneBookinDetails";
+export const TheaterUserCount= "api/theater/TheaterUserCount";
+export const getOneTheaterDayRevenue= "api/theater/getOneTheaterDayRevenue";
+export const OnereservationDetails= "api/theater/OnereservationDetails";
+export const getReservation= "api/theater/getReservation";

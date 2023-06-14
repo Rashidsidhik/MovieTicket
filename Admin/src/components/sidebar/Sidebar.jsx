@@ -14,7 +14,7 @@ import { setLogout } from "../../Redux/store";
 import Swal from "sweetalert2";
 import axios from "../../utils/axios";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
-
+import BookOnlineIcon from "@mui/icons-material/BookOnline";
 
 import { toast, ToastContainer } from "react-toastify";
 const Sidebar = () => {
@@ -96,6 +96,22 @@ const Sidebar = () => {
     <span>THEATER</span>
   </li>
 </Link>
+<p className="title">BOOKING MANAGMENT</p>
+          <Link to="/userBooking" style={{ textDecoration: "none" }}>
+            <li>
+              <BookOnlineIcon className="icon" />
+              <span>USER BOOKING</span>
+            </li>
+          </Link>
+          <br />
+
+          <Link to="/theaterBooking" style={{ textDecoration: "none" }}>
+            <li>
+              <BookOnlineIcon className="icon" />
+              <span>THEATER BOOKING </span>
+            </li>
+          </Link>
+
 <p className="title">POSTER MANAGMENT</p>
           <Link to="/addPoster" style={{ textDecoration: "none" }}>
             <li>

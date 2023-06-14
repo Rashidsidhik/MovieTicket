@@ -14,6 +14,14 @@ const {
   deletScreen,
   getAdmin,
   getscreen,
+  ReservationDetailsOneTheater,
+  getReservation,
+  getOnePaymentDetails,
+  getOneTheaterDayRevenue,
+  OnereservationDetails,
+  TheaterUserCount,
+  getReservationDetails,
+  getOneBookinDetails
 } = require("../controllers/theater");
 const { Theater } = require("../models/Theater");
 const router = express.Router();
@@ -32,5 +40,12 @@ router.get("/listMoveTheater",verifyToken, getMovies);
 router.delete("/deleteShowInfo/:id/:theaterID", verifyToken, deleteShowInfo); 
 router.delete("/deletScreen/:id/:screenname", verifyToken, deletScreen); 
 router.get("/getscreen/:id",getscreen);
-
+router.get("/getOneBookinDetails/:id",verifyToken, getOneBookinDetails);
+router.get("/ReservationDetailsOneTheater/:id",verifyToken, ReservationDetailsOneTheater);
+router.get("/getReservation/:id",verifyToken,getReservation);
+router.get("/getOnePaymentDetails/:id",verifyToken,getOnePaymentDetails);
+router.get("/getOneTheaterDayRevenue/:date/:id",verifyToken, getOneTheaterDayRevenue);
+router.get("/OnereservationDetails/:id",verifyToken, OnereservationDetails);
+router.get("/TheaterUserCount/:id",verifyToken, TheaterUserCount);
+router.get("/ReservationDetails/",verifyToken, getReservationDetails);
 module.exports = router;

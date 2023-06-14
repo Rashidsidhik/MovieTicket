@@ -2,22 +2,86 @@ import "./widget.scss";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
-import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import axios from "../../utils/axios";
+import { useState } from "react";
+import MovieIcon from "@mui/icons-material/Movie";
+import { OnereservationDetails, TheaterUserCount } from "../../utils/Constants";
+import { toast, ToastContainer } from "react-toastify";
 
 const Widget = ({ type }) => {
   let data;
 
-  //temporary
-  const amount = 100;
-  const diff = 20;
+  const generateError = (error) =>
+    toast.error(error, {
+      position: "top-right",
+    });
+
+  const [totalRevene, setTotalRevene] = useState([]);
+  const [count, setCount] = useState([]);
+
+  const theater = useSelector((state) => state.theater);
+  const theaterId = theater?._id;
+  const token = useSelector((state) => state.token);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `${OnereservationDetails}/${theaterId}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setTotalRevene(response.data);
+      } catch (error) {
+        if (
+          error.response &&
+          error.response.status >= 400 &&
+          error.response.status <= 500
+        ) {
+          generateError(error.response.data.message);
+        }
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchDatas = async () => {
+      try {
+        const response = await axios.get(`${TheaterUserCount}/${theaterId}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setCount(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchDatas();
+  }, []);
+
+  const totalRevenue = totalRevene.reduce(
+    (acc, ticket) => acc + ticket.total,
+    0
+  );
+  const movieCount = totalRevene.length;
+  const UserCount = count?.map((cou) => cou.userCount);
 
   switch (type) {
-    case "user":
+    case "order":
       data = {
-        title: "USERS",
+        title: "BOOKED USER",
         isMoney: false,
-        link: "See all users",
+
         icon: (
           <PersonOutlinedIcon
             className="icon"
@@ -27,42 +91,28 @@ const Widget = ({ type }) => {
             }}
           />
         ),
-      };
-      break;
-    case "order":
-      data = {
-        title: "ORDERS",
-        isMoney: false,
-        link: "View all orders",
-        icon: (
-          <ShoppingCartOutlinedIcon
-            className="icon"
-            style={{
-              backgroundColor: "rgba(218, 165, 32, 0.2)",
-              color: "goldenrod",
-            }}
-          />
-        ),
+        value: UserCount,
       };
       break;
     case "earning":
       data = {
-        title: "EARNINGS",
+        title: "MOVIE BOOKED",
         isMoney: true,
-        link: "View net earnings",
+
         icon: (
-          <MonetizationOnOutlinedIcon
+          <MovieIcon
             className="icon"
             style={{ backgroundColor: "rgba(0, 128, 0, 0.2)", color: "green" }}
           />
         ),
+        value: movieCount,
       };
       break;
     case "balance":
       data = {
-        title: "BALANCE",
+        title: "TOTAL REVENUE",
         isMoney: true,
-        link: "See details",
+
         icon: (
           <AccountBalanceWalletOutlinedIcon
             className="icon"
@@ -70,8 +120,9 @@ const Widget = ({ type }) => {
               backgroundColor: "rgba(128, 0, 128, 0.2)",
               color: "purple",
             }}
-          />
+          /> 
         ),
+        value: `${totalRevenue} ₹`,
       };
       break;
     default:
@@ -81,19 +132,22 @@ const Widget = ({ type }) => {
   return (
     <div className="widget">
       <div className="left">
+        <h4 style={{ color: "rgb(160, 160, 160)" }}>
+          {theater?.application?.theatername}
+        </h4>
         <span className="title">{data.title}</span>
-        <span className="counter">
-          {data.isMoney && "$"} {amount}
+        <span style={{ paddingLeft: "10px" }} className="counter">
+          {data.value}
         </span>
         <span className="link">{data.link}</span>
       </div>
       <div className="right">
         <div className="percentage positive">
           <KeyboardArrowUpIcon />
-          {diff} %
         </div>
         {data.icon}
       </div>
+      <ToastContainer />
     </div>
   );
 };

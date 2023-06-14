@@ -129,8 +129,10 @@ export const CinemasBody = () => {
         </div>
       </div>
       <div style={{ padding: "15px" }}>
-        {theater.map((theaterData) => {
-          return (
+        {theater.length === 0 ? (
+          <p>Currently movie is not available in any theater.</p>
+        ) : (
+          theater.map((theaterData) => (
             <>
               <div className={styles.container__card}>
                 <div className={styles.container__card__title}>
@@ -139,114 +141,98 @@ export const CinemasBody = () => {
                   />
                   <h4>{theaterData._id}</h4>
                 </div>
-                {theaterData.screens.map((screen) => {
-                  return (
-                    <div className={styles.container__card__info}>
-                      <div className={styles.container__card__info__options}>
-                        <div style={{ color: "#49BA8E" }}>
-                          <SendToMobileIcon />
-                          <span>M-Ticket</span>
-                        </div>
-                        <div style={{ color: "#FFB23F", paddingLeft: "30px" }}>
-                          <FastfoodIcon />
-                          <span>Food </span>
-                        </div>
+                {theaterData.screens.map((screen) => (
+                  <div className={styles.container__card__info}>
+                    <div className={styles.container__card__info__options}>
+                      <div style={{ color: "#49BA8E" }}>
+                        <SendToMobileIcon />
+                        <span>M-Ticket</span>
                       </div>
-                      {screen.showInfo.map((showinfo) => {
-                        return (
-                          <>
-                            {showinfo.map((data) => {
-                              return (
-                                <div
-                                  className={
-                                    styles.container__card__info__times__container
-                                  }
-                                >
-                                  <div style={{ display: "flex" }}>
-                                    {Array.isArray(data.time) &&
-                                      data.time.map((time) => {
-                                        return (
-                                          <div
-                                            style={{
-                                              pointerEvents: "all",
-                                              color: "white",
-                                            }}
-                                            className={styles.button}
-                                            onClick={() =>
-                                              seatView(
-                                                time,
-                                                screen.screenname,
-                                                screen.theaterId,
-                                                theaterData._id,
-                                                data.ticketPrice,
-                                                data.moviename,
-                                                movieId
-                                              )
-                                            }
-                                          >
-                                            <div
-                                              style={{
-                                                border: "1px solid black",
-                                                padding: "5px",
-                                                marginRight: "10px",
-                                              }}
-                                            >
-                                              {time}
-                                            </div>
-
-                                            <div
-                                              className={
-                                                styles.price__container
-                                              }
-                                            >
-                                              <div
-                                                style={{ alignItems: "center" }}
-                                              >
-                                                <p>Rs.{data.ticketPrice}</p>
-                                                <span>{data.moviename}</span>
-                                                <span
-                                                  style={{ color: "#4abd5d" }}
-                                                >
-                                                  Available
-                                                </span>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        );
-                                      })}
-                                  </div>
+                      <div style={{ color: "#FFB23F", paddingLeft: "30px" }}>
+                        <FastfoodIcon />
+                        <span>Food </span>
+                      </div>
+                    </div>
+                    {screen.showInfo.map((showinfo) => (
+                      <>
+                        {showinfo.map((data) => (
+                          <div
+                            className={
+                              styles.container__card__info__times__container
+                            }
+                          >
+                            <div style={{ display: "flex" }}>
+                              {Array.isArray(data.time) &&
+                                data.time.map((time) => (
                                   <div
                                     style={{
-                                      display: "flex",
-                                      alignItems: "center",
+                                      pointerEvents: "all",
+                                      color: "white",
                                     }}
+                                    className={styles.button}
+                                    onClick={() =>
+                                      seatView(
+                                        time,
+                                        screen.screenname,
+                                        screen.theaterId,
+                                        theaterData._id,
+                                        data.ticketPrice,
+                                        data.moviename,
+                                        movieId
+                                      )
+                                    }
                                   >
-                                    <CircleIcon
+                                    <div
                                       style={{
-                                        color: "#FFC610",
-                                        fontSize: 8,
-                                        marginRight: 5,
+                                        border: "1px solid black",
+                                        padding: "5px",
+                                        marginRight: "10px",
                                       }}
-                                    />{" "}
-                                    <span
-                                      style={{ fontSize: 12, color: "gray" }}
                                     >
-                                      Cancellation Available
-                                    </span>
+                                      {time}
+                                    </div>
+
+                                    <div className={styles.price__container}>
+                                      <div style={{ alignItems: "center" }}>
+                                        <p>Rs.{data.ticketPrice}</p>
+                                        <span>{data.moviename}</span>
+                                        <span style={{ color: "#4abd5d" }}>
+                                          Available
+                                        </span>
+                                      </div>
+                                    </div>
                                   </div>
-                                </div>
-                              );
-                            })}
-                          </>
-                        );
-                      })}
-                    </div>
-                  );
-                })}
+                                ))}
+                            </div>
+                            <div
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                              }}
+                            >
+                              <CircleIcon
+                                style={{
+                                  color: "#FFC610",
+                                  fontSize: 8,
+                                  marginRight: 5,
+                                }}
+                              />{" "}
+                              <span
+                                style={{ fontSize: 12, color: "gray" }}
+                              >
+                                Cancellation Available
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                      </>
+                    ))}
+                  </div>
+                ))}
               </div>
             </>
-          );
-        })}
+          ))
+        )}
       </div>
       <ToastContainer />
     </div>

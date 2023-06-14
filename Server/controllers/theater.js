@@ -6,6 +6,7 @@ var Loginvalidate = require("../utils/validate");
 const Movie = require("../models/Movie");
 const jwt = require("jsonwebtoken");
 const { ObjectId } = require("mongodb");
+const Reservation = require("../models/ReservationModel");
 const { types } = require("joi");
 const mongoose = require("mongoose");
 module.exports = {
@@ -330,4 +331,152 @@ module.exports = {
       res.json({ status: true, screeninfo });
     } catch (error) {}
   },
+  getOneBookinDetails: async (req, res) => {
+    try {
+      const bookingDetails = await Reservation.findById(req.params.id);
+      if (!bookingDetails) {
+        return res.status(404).json({ message: "bookingDetails not found" });
+      }
+      res.json(bookingDetails);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server error" });
+    }
+  },
+
+  ReservationDetailsOneTheater: async (req, res) => {
+    const theaterId = req.params.id;
+    try {
+      const bookingDetails = await Reservation.find({
+        theaterId: new ObjectId(req.params.id),
+      });
+      if (!bookingDetails) {
+        return res.status(404).json({ message: "bookingDetails not found" });
+      }
+      res.json(bookingDetails);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server error" });
+    }
+  },
+  getReservation: async (req, res) => {
+    const theaterId = req.params.id;
+    try {
+      const DailyRevenue = await Reservation.aggregate([
+        {
+          $match: { theaterId: new ObjectId(theaterId) },
+        },
+        {
+          $group: {
+            _id: "$showDate",
+            count: { $sum: 1 },
+            totalRevenue: { $sum: "$total" },
+          },
+        },
+        {
+          $sort: {
+            _id: 1,
+          },
+        },
+      ]);
+      res.json(DailyRevenue);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server error" });
+    }
+  },
+  getOnePaymentDetails: async (req, res) => {
+    try {
+      const paymentDetails = await Reservation.findById(req.params.id).sort(
+        "-bookedDate"
+      );
+      if (!paymentDetails) {
+        return res.status(404).json({ message: "paymentDetails not found" });
+      }
+      res.json(paymentDetails);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: "Internal Server Error" + error });
+    }
+  },
+  getOneTheaterDayRevenue: async (req, res) => {
+    try {
+      const today = new Date(req.params.date); // get today's date
+      const onDayRevenue = await Reservation.aggregate([
+        {
+          $match: {
+            theaterId: new ObjectId(req.params.id),
+            showDate: req.params.date,
+          },
+        },
+
+        {
+          $group: {
+            _id: "$showDate",
+            count: { $sum: 1 },
+            revenue: { $sum: "$total" },
+          },
+        },
+      ]);
+      res.json(onDayRevenue);
+    } catch (error) {
+      res.status(500).send({ message: "Internal Server Error" + error });
+    }
+  },
+  TheaterUserCount: async (req, res) => {
+    try {
+      const OneTheateruserCount = await Reservation.aggregate([
+        {
+          $match: {
+            theaterId: new ObjectId(req.params.id),
+          },
+        },
+
+        {
+          $group: {
+            _id: "$theaterId",
+            distinctUserIds: { $addToSet: "$userId" },
+          },
+        },
+        {
+          $project: {
+            _id: 0,
+            userCount: { $size: "$distinctUserIds" },
+          },
+        },
+      ]);
+      res.json(OneTheateruserCount);
+    } catch (error) {
+      res.status(500).send({ message: "Internal Server Error" + error });
+    }
+  },
+  OnereservationDetails: async (req, res) => {
+    const theaterId = req.params.id;
+
+    try {
+      const reservationDetails = await Reservation.find({
+        theaterId: new ObjectId(theaterId),
+      });
+      res.json(reservationDetails);
+    } catch (error) {
+      res.status(500).send({ message: "Internal Server Error" + error });
+    }
+  },
+  getReservationDetails: async (req, res) => {
+    const pageNo = req.query.page;
+    const options = {
+      page: Number(pageNo) ?? 1,
+      limit: 3,
+      projection: {
+        password: 0,
+      },
+    };
+    try {
+      const ReservationDetails = await Reservation.paginate({}, options);
+      res.json(ReservationDetails);
+    } catch (error) {
+      res.status(500).send({ message: "Internal Server Error" + error });
+    }
+  },
+  
 };

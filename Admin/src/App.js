@@ -10,7 +10,7 @@ import { DarkModeContext } from "./context/darkModeContext";
 import Login from './pages/Login/Login';
 import Single from "./pages/userList/Single";
 import New from "./pages/ADDMOVIE/New";
-import Home from './pages/Home/Home';
+import Home from './pages/Home/Home'; 
 import AddGenre from "./pages/AddGenre/AddGenre";
 import EditGenre from "./components/editGenre/editGenre";
 import MovieList from "./pages/MovieList/MovieList";
@@ -20,7 +20,11 @@ import AddPoster from "./pages/AddPoster/Poster";
 import PosterList from "./components/list/list";
 import EditPoster from "./components/EditPoster/EditPoster";
 import TheaterView from "./pages/TheaterList/TheaterView";
+import BookingViewList from "./components/UserBookingViewList/BookingViewList";
+import BookingDetails from "./components/UserBookingMnage/BookingList";
 import PageNotFound from "./PageNotFound";
+import MovieBokkingList from "./pages/TheaterMovieBokkingList/MovieBokkingList";
+import Report from "./pages/Report/Report";
 function App() {
   const { darkMode } = useContext(DarkModeContext);
   const token = useSelector(state=>state.token)
@@ -53,6 +57,10 @@ function App() {
           <Route path="/addPoster" element={<AddPoster />} />
           <Route path="/listPoster" element={<PosterList />} />
           <Route path="/view/:id" element={<TheaterView />} />
+          <Route path="/salesreport" element={<Report />} />
+          <Route path="/Bookingview/:id" element={<BookingViewList />} />
+          <Route path="/userBooking" element={<BookingDetails />} />
+          <Route path="/theaterBooking" element={<MovieBokkingList />} />
           <Route path="*" element={<PageNotFound />} />
           </Routes>
           

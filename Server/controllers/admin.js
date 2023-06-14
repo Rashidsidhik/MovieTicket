@@ -5,6 +5,7 @@ const { User } = require("../models/user");
 const { Theater } = require("../models/Theater");
 const poster = require("../models/Poster");
 const genre = require("../models/genre");
+const Reservation = require("../models/ReservationModel");
 const bcrypt = require("bcrypt");
 module.exports = {
   adminSignup: async (req, res) => {
@@ -413,6 +414,86 @@ module.exports = {
       res.status(500).send({ message: "Internal Server Error" + error });
     }
   },
-  
-  
+  AdmingetOnePaymentDetails: async (req, res) => {
+    try {
+      const paymentDetails = await Reservation.findById(req.params.id).sort(
+        "-bookedDate"
+      );
+      if (!paymentDetails) {
+        return res.status(404).json({ message: "paymentDetails not found" });
+      }
+      res.json(paymentDetails);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: "Internal Server Error" + error });
+    }
+  },
+  AdmingetReservationDetails: async (req, res) => {
+    const pageNo = req.query.page;
+    const options = {
+      page: Number(pageNo) ?? 1,
+      limit: 3,
+      projection: {
+        password: 0,
+      },
+    };
+    try {
+      const ReservationDetails = await Reservation.paginate({}, options);
+      res.json(ReservationDetails);
+    } catch (error) {
+      res.status(500).send({ message: "Internal Server Error" + error });
+    }
+  },
+  getDailyRevenue: async (req, res) => {
+    try {
+      const DailyRevenue = await Reservation.aggregate([
+        {
+          $group: {
+            _id: "$showDate",
+            totalRevenue: { $sum: "$total" },
+          },
+        },
+        {
+          $sort: {
+            _id: 1,
+          },
+        },
+      ]);
+      res.json(DailyRevenue);
+    } catch (error) {
+      res.status(500).send({ message: "Internal Server Error" + error });
+    }
+  },
+
+  getOneDayRevenue: async (req, res) => {
+    try {
+      const today = new Date(req.params.id); // get today's date
+      const onDayRevenue = await Reservation.aggregate([
+        {
+          $match: {
+            showDate: { $eq: req.params.id },
+          },
+        },
+        {
+          $group: {
+            _id: null,
+            count: { $sum: 1 },
+            revenue: { $sum: "$total" },
+          },
+        },
+      ]);
+      res.json(onDayRevenue);
+    } catch (error) {
+      res.status(500).send({ message: "Internal Server Error" + error });
+    }
+  },
+  reservationDetails: async (req, res) => {
+    try {
+      const reservationDetails = await Reservation.find();
+
+      res.json(reservationDetails);
+    } catch (error) {
+      res.status(500).send({ message: "Internal Server Error" + error });
+    }
+  },
 };
