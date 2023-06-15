@@ -34,6 +34,10 @@ const moviesSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    Available: {
+      type: Boolean,
+      default: true,
+    },
   },
   {
     timestamps: true,

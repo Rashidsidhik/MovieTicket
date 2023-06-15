@@ -203,13 +203,21 @@ module.exports = {
   },
   deleteMovie: async (req, res) => {
     let id = req.params.id;
-
+  
     try {
-      const data = await Movie.findByIdAndRemove({ _id: id });
-      const update=await Movie.find().sort("-createdAt");
+      const data = await Movie.findByIdAndUpdate(
+        { _id: id },
+        { Available: false },
+        { new: true }
+      );
+      const update = await Movie.find().sort("-createdAt");
       res.status(200).json(update);
-    } catch (error) {}
+    } catch (error) {
+      // Handle the error appropriately, such as sending an error response or logging
+      res.status(500).json({ error: 'An error occurred' });
+    }
   },
+  
   editMovie: async (req, res) => {
     const id = req.params.id;
     const output = {};

@@ -349,6 +349,12 @@ module.exports = {
 
     // const releaseDate = req.params.releasedate;
     try {
+      const movie = await Movie.findOne({ title: movieTitle,Available:true });
+
+    if (!movie) {
+      res.json({ data: [] }); // Movie not available
+      return;
+    } 
       const data = await Theater.aggregate([
         {
           $match: {
