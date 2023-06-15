@@ -25,9 +25,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { setLogout } from "../../Redux/store";
 import { Button } from "@mui/material";
 import Swal from "sweetalert2";
+import Tooltip from "@mui/material/Tooltip";
+import ChatIcon from "@mui/icons-material/Chat";
+import Badge from "@mui/material/Badge";
 import {
   getOneTheater,
-  
+  getUnrededMessage,
+  notificationCountTheater,
 } from "../../utils/Constants";
 const Sidebar = () => {
   const theater = useSelector((state) => state.theater);
@@ -50,6 +54,19 @@ const Sidebar = () => {
       }
     });
   }
+  const token = useSelector((state) => state.token);
+  const [read, getRead] = useState([]);
+
+  const [unmessage, setUnMessage] = useState([]);
+
+  useEffect(() => {
+    getUnread();
+  }, []);
+
+  useEffect(() => {
+    getUnrededMessages();
+  }, []);
+
   const generateError = (error) =>
   toast.error(error, {
     position: "top-right",
@@ -83,6 +100,66 @@ useEffect(() => {
   getTheater();
 }, []);
  
+const getUnread = () => {
+  try {
+    axios
+      .get(`${notificationCountTheater}/${theaterId}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        getRead(response.data);
+      })
+      .catch((error) => {
+   
+        if (error.response) {
+          generateError(error.response.data.message);
+        } else {
+          generateError("Network error. Please try again later.");
+        }
+      });
+  } catch (error) {
+    if (
+      error.response &&
+      error.response.status >= 400 &&
+      error.response.status <= 500
+    ) {
+      generateError(error.response.data.message);
+    }
+  }
+};
+const getUnrededMessages = () => {
+  try {
+    axios
+      .get(`${getUnrededMessage}/${theaterId}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+  
+        setUnMessage(response.data);
+      })
+      .catch((error) => {
+        if (error.response) {
+          generateError(error.response.data.message);
+        } else {
+          generateError("Network error. Please try again later.");
+        }
+      });
+  } catch (error) {
+    if (
+      error.response &&
+      error.response.status >= 400 &&
+      error.response.status <= 500
+    ) {
+      generateError(error.response.data.message);
+    }
+  }
+};
   return (
     <div className="sidebar">
     <div className="top">
@@ -138,6 +215,37 @@ useEffect(() => {
                   <span>PAYMENT MANAGE</span>
                 </li>
               </Link>
+              <br />
+              <br />
+              {unmessage?.length > 0 ? (
+                <Tooltip
+                  title={
+                    <ul>
+                      <strong>ADMIN - </strong>
+                      {unmessage?.map((msg) => (
+                        <li key={msg?.senderName}>
+                          <strong>Message: {msg?.message?.text}</strong>
+                        </li>
+                      ))}
+                    </ul>
+                  }
+                >
+                  <Link to="/theater/chat" style={{ textDecoration: "none" }}>
+                    <Badge badgeContent={read} color="error">
+                      <ChatIcon className="icon" />
+                      <span>CHAT</span>
+                    </Badge>
+                  </Link>
+                </Tooltip>
+              ) : (
+                <Link to="/theater/chat" style={{ textDecoration: "none" }}>
+                  <Badge badgeContent={read} color="error">
+                    <ChatIcon className="icon" />
+                    <span>CHAT</span>
+                  </Badge>
+                </Link>
+              )}
+              <br />
               <br />
             </div>
           )}

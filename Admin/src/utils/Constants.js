@@ -1,4 +1,4 @@
-export const baseUrl = 'http://localhost:1000/'
+export const baseUrl = process.env.REACT_APP_BASE_URL;
 
 // urls
 export const loginPost = "api/admin/login";
@@ -31,3 +31,10 @@ export const getOneDayRevenue = "api/admin/getOneDayRevenue";
 export const reservationDetails = "api/admin/reservationDetails";
 export const getDailyRevenue = "api/admin/getDailyRevenue";
 export const getAllUserss = "api/admin/getAllUserss"; 
+export const readTrue = "api/admin/readTrue";
+export const getUnreadMEssageAllTheater = "api/admin/getUnreadMEssageAllTheater"; 
+export const notificationCountAdmin = "api/admin/notificationCountAdmin"; 
+export const getUnrededMessage = "api/admin/getUnrededMessage";
+export const addmsg = "api/message/addmsg";
+export const getmsg = "api/message/getmsg";
+export const latestMessage = "api/admin/latestMessage";

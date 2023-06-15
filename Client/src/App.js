@@ -17,9 +17,26 @@ import BookingDetails from './Pages/BookingDetails/BookingDetails';
 import Seating from './components/Seating/Seating';
 import SummaryPage from './Pages/SummeryPage/SummeryPage';
 import Ticket  from './components/OrderHistory/Ticket';
+import socket from './socket.io/socket';
 function App() { 
 	const token = useSelector(state=>state.token)
-  // if (token) store.dispatch(getWishlistIds());
+
+	const currentUser = useSelector(state=>state.user)
+	const dispatch = useDispatch();
+
+	useEffect(()=>{
+		console.log('.gggggggggg');
+        socket.emit("newUser",currentUser?._id)
+    },[currentUser]);
+
+
+	useEffect(() => {
+		console.log('oooooooooo');
+		socket.on("getBlocked", () => {
+			console.log('getBlocked');
+			dispatch(setLogout());
+		});
+	  }, []);
  
  
 	

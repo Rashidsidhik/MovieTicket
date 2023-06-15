@@ -25,6 +25,7 @@ import BookingDetails from "./components/UserBookingMnage/BookingList";
 import PageNotFound from "./PageNotFound";
 import MovieBokkingList from "./pages/TheaterMovieBokkingList/MovieBokkingList";
 import Report from "./pages/Report/Report";
+import Chat from "./pages/Chat/Chat";
 function App() {
   const { darkMode } = useContext(DarkModeContext);
   const token = useSelector(state=>state.token)
@@ -39,11 +40,13 @@ function App() {
 
   return (
     <div className={darkMode ? "app dark" : "app"}>
-
-        
-          <Routes>
-              
-          <Route path="/login" element={!token ? <Login /> : <Navigate to="/" />} />
+<Routes>
+        <Route
+          path="/login"
+          element={!token ? <Login /> : <Navigate to="/" />}
+        />
+        <Route path="/">
+        <Route index element={token ? <Home /> : <Navigate to="/login" />} />
           <Route path="/users-list" element={<Single />} />
             <Route  path="/" element={token ? <Home />: <Navigate to="/login" />} />
             <Route path="/addMovies" element={<New />} />
@@ -61,7 +64,9 @@ function App() {
           <Route path="/Bookingview/:id" element={<BookingViewList />} />
           <Route path="/userBooking" element={<BookingDetails />} />
           <Route path="/theaterBooking" element={<MovieBokkingList />} />
+          <Route path="/Admin/chat" element={<Chat />} />
           <Route path="*" element={<PageNotFound />} />
+          </Route>
           </Routes>
           
  

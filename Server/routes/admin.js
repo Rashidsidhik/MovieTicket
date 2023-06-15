@@ -28,7 +28,13 @@ const {
   AdmingetReservationDetails,
   reservationDetails,
   getDailyRevenue,
-  getOneDayRevenue
+  getOneDayRevenue,
+  getUnrededMessage,
+  notificationCountAdmin,
+  readTrueTheater,
+  readTrue,
+  getUnreadMEssageAllTheater,
+  getLatestMessage,
 } = require("../controllers/admin");
 const { Admin } = require("../models/admin");
 const router = express.Router();
@@ -61,5 +67,10 @@ router.get("/reservationDetails",verifyToken, reservationDetails);
 router.get("/getDailyRevenue",verifyToken, getDailyRevenue);
 router.get("/getOneDayRevenue/:id",verifyToken, getOneDayRevenue);
 router.get("/ReservationDetailss/",verifyToken, AdmingetReservationDetails);
-
+router.patch("/readTrueTheater/:id/:theaterId", readTrueTheater); 
+router.patch("/readTrue/:id/:adminId",verifyToken, readTrue);
+router.get("/getUnreadMEssageAllTheater/:adminId/:id",getUnreadMEssageAllTheater);
+router.get("/latestMessage/:id", getLatestMessage);
+router.get("/notificationCountAdmin/:id",verifyToken, notificationCountAdmin);
+router.get("/getUnrededMessage/:id",verifyToken, getUnrededMessage);
 module.exports = router;

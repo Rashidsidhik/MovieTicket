@@ -1,12 +1,16 @@
 var Loginvalidate = require("../utils/validate");
 const { Admin, validate } = require("../models/admin");
-const Movie = require("../models/Movie");
 const { User } = require("../models/user");
-const { Theater } = require("../models/Theater");
-const poster = require("../models/Poster");
 const genre = require("../models/genre");
+const { Theater } = require("../models/Theater");
+const Movie = require("../models/Movie");
 const Reservation = require("../models/ReservationModel");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const poster = require("../models/Poster");
+const Message = require("../models/MessageModel");
+const { ObjectId } = require("mongodb");
+const mongoose = require("mongoose");
 module.exports = {
   adminSignup: async (req, res) => {
     try {
@@ -504,4 +508,121 @@ module.exports = {
       res.status(500).send({ message: "Internal Server Error" + error });
     }
   },
+  
+  notificationCountAdmin: async (req, res) => {
+    const adminId = req.params.id;
+    const objectId = mongoose.Types.ObjectId(adminId);
+    try {
+      const unreadCount = await Message.countDocuments({
+        recipient: objectId,
+        read: false,
+      });
+      res.json(unreadCount);
+    } catch (error) {
+      res.status(500).json(error.message);
+    }
+  },
+
+  getUnrededMessage: async (req, res) => {
+    const adminId = req.params.id;
+    const objectId = mongoose.Types.ObjectId(adminId);
+    try {
+      const unredMessages = await Message.find({
+        recipient: objectId,
+        read: false,
+      });
+      res.json(unredMessages);
+    } catch (error) {
+      res.status(500).send({ message: "Internal Server Error" + error });
+    }
+  },
+  readTrueTheater: async (req, res) => {
+    try {
+      let id = req.params.id;
+      let theaterId = req.params.theaterId;
+      const objectId = mongoose.Types.ObjectId(id);
+      const objectId1 = mongoose.Types.ObjectId(theaterId);
+      const readTrue = await Message.updateMany(
+        { recipient: objectId1, sender: objectId },
+        { read: true }
+      );
+
+      const updatedMessage = await Message.findOneAndUpdate(
+        { recipient: objectId1, sender: objectId, read: true },
+        { $set: { read: true } },
+        { new: true }
+      );
+
+      res.json(updatedMessage);
+    } catch (err) {
+      res.status(500).json({ message: "Internal server error" });
+    }
+  },
+  getUnreadMEssageAllTheater: async (req, res) => {
+    const id = req.params.id;
+    const adminId = req.params.adminId;
+    const objectId = mongoose.Types.ObjectId(id);
+    const objectId1 = mongoose.Types.ObjectId(adminId);
+    try {
+      const unread = await Message.aggregate([
+        {
+          $match: {
+            read: false,
+            sender: objectId,
+            recipient: objectId1,
+          },
+        },
+        {
+          $group: {
+            _id: {
+              sender: "$sender",
+              recipient: "$recipient",
+            },
+            count: {
+              $sum: 1,
+            },
+          },
+        },
+      ]);
+      res.json(unread);
+    } catch (error) {
+      res.status(500).send({ message: "Internal Server Error" + error });
+    }
+  },
+
+  readTrue: async (req, res) => {
+    try {
+      let id = req.params.id;
+      let adminId = req.params.adminId;
+      const objectId1 = mongoose.Types.ObjectId(id);
+      const objectId = mongoose.Types.ObjectId(adminId);
+      const readTrue = await Message.updateMany(
+        { recipient: objectId, sender: objectId1 },
+        { read: true }
+      );
+      const updatedMessage = await Message.findOneAndUpdate(
+        { recipient: objectId, sender: objectId1, read: true },
+        { $set: { read: true } },
+        { new: true }
+      );
+      res.json(updatedMessage);
+    } catch (err) {
+      res.status(500).json({ message: "Internal server error" });
+    }
+  },
+  getLatestMessage: async (req, res) => {
+    let userId = req.params.id;
+
+    try {
+      const message = await Message.findOne({ sender: userId })
+        .sort({ createdAt: -1 })
+        .select("createdAt")
+        .lean();
+      return res.json(message);
+    } catch (error) {
+      res.status(500).send({ message: "Internal Server Error" + error });
+      throw new Error("Failed to fetch latest message");
+    }
+  },
+
 };

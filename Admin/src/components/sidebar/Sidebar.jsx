@@ -2,6 +2,7 @@ import "./sidebar.scss";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import MovieIcon from "@mui/icons-material/Movie";
+import CreditCardIcon from "@mui/icons-material/CreditCard";
 import TheatersIcon from "@mui/icons-material/Theaters";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import { Button } from "@mui/material";
@@ -11,15 +12,21 @@ import { DarkModeContext } from "../../context/darkModeContext";
 import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setLogout } from "../../Redux/store";
+import BookOnlineIcon from "@mui/icons-material/BookOnline";
+import ChatIcon from "@mui/icons-material/Chat";
+import Badge from "@mui/material/Badge";
 import Swal from "sweetalert2";
 import axios from "../../utils/axios";
-import CreditCardIcon from "@mui/icons-material/CreditCard";
-import BookOnlineIcon from "@mui/icons-material/BookOnline";
+import Tooltip from "@mui/material/Tooltip";
+import {
+  getUnrededMessage,
+  notificationCountAdmin,
+} from "../../utils/Constants";
 
 import { toast, ToastContainer } from "react-toastify";
 const Sidebar = () => {
   const { dispatch } = useContext(DarkModeContext);
- 
+  const disPatch = useDispatch();
   const dispatchs = useDispatch();
 
   function handleLogout() {
@@ -45,12 +52,18 @@ const Sidebar = () => {
         }
       });
   }
- 
-  
+  const token = useSelector((state) => state.token);
+  const [read, getRead] = useState([]);
+  const [unmessage, setUnMessage] = useState([]);
 
   // Map over the unread messages to get their text content
-
-
+  useEffect(() => {
+    getUnread();
+  }, []);
+  useEffect(() => {
+    getUnrededMessages();
+  }, []);
+  
 
   const generateError = (error) =>
     toast.error(error, {
@@ -58,9 +71,48 @@ const Sidebar = () => {
     });
   const admin = useSelector((state) => state.admin);
 
- 
- 
-
+  const getUnread = () => {
+    if (admin && admin._id) { 
+    axios
+      .get(`${notificationCountAdmin}/${admin._id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        getRead(response.data);
+      })
+      .catch((error) => {
+        if (error.response) {
+          generateError(error.response.data.message);
+        } else {
+          generateError("Network error. Please try again later.");
+        }
+      });
+    }
+  };
+  const getUnrededMessages = () => {
+    if (admin && admin._id) {
+    axios
+      .get(`${getUnrededMessage}/${admin._id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        setUnMessage(response.data);
+      })
+      .catch((error) => {
+        if (error.response) {
+          generateError(error.response.data.message);
+        } else {
+          generateError("Network error. Please try again later.");
+        }
+      });
+    }
+    };
   return (
     <div className="sidebar">
       <div className="top">
@@ -154,7 +206,38 @@ const Sidebar = () => {
           </Link>
          
           <br />
+          {unmessage?.length > 0 ? (
+            <Tooltip
+              title={
+                <ul>
+                  {unmessage?.map((msg) => (
+                    <li key={msg?.senderName}>
+                      <strong>
+                        {msg?.senderName} - <span></span>Message:{" "}
+                        {msg?.message?.text}
+                      </strong>
+                    </li>
+                  ))}
+                </ul>
+              }
+            >
+              <Link to="/Admin/chat" style={{ textDecoration: "none" }}>
+                <Badge badgeContent={read} color="error">
+                  <ChatIcon className="icon" />
+                  <span>CHAT</span>
+                </Badge>
+              </Link>
+            </Tooltip>
+          ) : (
+            <Link to="/Admin/chat" style={{ textDecoration: "none" }}>
+              <Badge badgeContent={read} color="error">
+                <ChatIcon className="icon" />
+                <span>CHAT</span>
+              </Badge>
+            </Link>
+          )}
 
+          <br />
           <li>
             <ExitToAppIcon className="icon" />
 

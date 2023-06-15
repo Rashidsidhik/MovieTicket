@@ -21,7 +21,9 @@ const {
   OnereservationDetails,
   TheaterUserCount,
   getReservationDetails,
-  getOneBookinDetails
+  getOneBookinDetails,
+  notificationCountTheater,
+  getUnrededMessage
 } = require("../controllers/theater");
 const { Theater } = require("../models/Theater");
 const router = express.Router();
@@ -48,4 +50,6 @@ router.get("/getOneTheaterDayRevenue/:date/:id",verifyToken, getOneTheaterDayRev
 router.get("/OnereservationDetails/:id",verifyToken, OnereservationDetails);
 router.get("/TheaterUserCount/:id",verifyToken, TheaterUserCount);
 router.get("/ReservationDetails/",verifyToken, getReservationDetails);
+router.get("/notificationCountTheater/:id",verifyToken, notificationCountTheater);
+router.get("/getUnrededMessage/:id",verifyToken, getUnrededMessage);
 module.exports = router;

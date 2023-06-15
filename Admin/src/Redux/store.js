@@ -1,65 +1,50 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  mode: "light",
-  theater: null,
-  token: null,
-  count: [],
-};
+    mode: "light",
+    admin: null,
+    token:null,
+    count:[],
+    posts:[]
+    
+}; 
 
 export const authSlice = createSlice({
-  name: "auth",
-  initialState,
-  reducers: {
-    setMode: (state) => {
-      state.mode = state.mode === "light" ? "dark" : "light";
+    name: "auth",
+    initialState,
+    reducers: {
+        setMode: (state) => {
+            state.mode = state.mode === "light" ? "dark" : "light";
+        },
+        setLogin: (state, action) => {  
+            state.admin = action.payload.admin;
+            state.token = action.payload.token;
+        },
+        setLogout: (state) => {
+            state.admin = null;
+            state.token = null;
+        },
+        setUser: (state, action) => {
+            state.admin = action.payload.admin;
+        },
+         setMove:(state,action)=>{
+            state.movie=action.payload.movie
+        },
+         setCount:(state,action)=>{
+            state.count=action.payload.count
+        },
+        setPosts:(state,action)=>{
+            state.posts=action.payload.posts
+        },
+        setToken: (state, action) => {
+            state.token = action.payload.token;
+          },
+          setGenre: (state, action) => {
+            state.genre = action.payload.genre;
+          },
     },
-    setLogin: (state, action) => {
-      state.theater = action.payload.theater;
-      state.token = action.payload.token;
-    },
-    setLogout: (state) => {
-      state.theater = null;
-      state.token = null;
-    },
-    setPosts: (state, action) => {
-      state.posts = action.payload.posts;
-    },
-    setPost: (state, action) => {
-      const updatedPosts = state.posts.map((post) => {
-        if (post._id === action.payload.post._id) return action.payload.post;
-        return post;
-      });
-      state.posts = updatedPosts;
-    },
-    setTheater: (state, action) => {
-      state.theater = action.payload.theater;
-    },
-    setMessages: (state, action) => {
-      state.messages = action.payload.messages;
-    },
-    setCount: (state, action) => {
-      state.count = action.payload.count;
-    },
-    setMove:(state,action)=>{
-      state.movie=action.payload.movie
-  },
-  setGenre: (state, action) => {
-    state.genre = action.payload.genre;
-  },
-  },
 });
 
-export const {
-  setMode,
-  setLogin,
-  setLogout,
-  setPosts,
-  setPost,
-  setTheater,
-  setMessages,
-  setCount,
-  setMove,
-  setGenre,
-} = authSlice.actions;
+export const { setMode, setLogin, setLogout,setMove, setUser, setMessages,setCount,setPosts,setToken,setGenre } =
+    authSlice.actions;
 export default authSlice.reducer;

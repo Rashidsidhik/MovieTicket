@@ -19,7 +19,8 @@ import BookingList from "./components/BookingMnage/BookingList";
 import PaymentList from "./components/PaymentManage/PaymentList";
 import PaymentViewList from "./components/PaymentViewList/PaymentViewList";
 import BookingViewList from "./components/BookingViewList/BookingViewList";
-
+import Report from "./pages/Report/Report";
+import Chat from "./pages/Chat/Chat";
 function App() {
   const { darkMode } = useContext(DarkModeContext);
   const token = useSelector(state=>state.token)
@@ -46,6 +47,8 @@ function App() {
             <Route path="/PaymentDetails" element={<PaymentList/>}/>
             <Route path="/Paymnetview/:id" element={<PaymentViewList/>}/>
             <Route path="/Bookingview/:id" element={<BookingViewList/>}/>
+            <Route path="/salesreport" element={<Report/>}/>
+            <Route path="/theater/chat" element={<Chat/>}/>
             <Route path='*' element={<PageNotFound/>}/>
           </Routes>
           

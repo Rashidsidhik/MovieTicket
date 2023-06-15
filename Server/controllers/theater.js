@@ -9,6 +9,7 @@ const { ObjectId } = require("mongodb");
 const Reservation = require("../models/ReservationModel");
 const { types } = require("joi");
 const mongoose = require("mongoose");
+const Message = require("../models/MessageModel");
 module.exports = {
   theaterSignup: async (req, res) => {
     try {
@@ -478,5 +479,31 @@ module.exports = {
       res.status(500).send({ message: "Internal Server Error" + error });
     }
   },
-  
+  notificationCountTheater: async (req, res) => {
+    const theaterId = req.params.id;
+    const objectId = mongoose.Types.ObjectId(theaterId);
+    try {
+      const unreadCount = await Message.countDocuments({
+        recipient: objectId,
+        read: false,
+      });
+      res.json(unreadCount);
+    } catch (error) {
+      res.status(500).send({ message: "Internal Server Error" + error });
+    }
+  },
+
+  getUnrededMessage: async (req, res) => {
+    const theaterId = req.params.id;
+    const objectId = mongoose.Types.ObjectId(theaterId);
+    try {
+      const unredMessages = await Message.find({
+        recipient: objectId,
+        read: false,
+      });
+      res.json(unredMessages);
+    } catch (error) {
+      res.status(500).send({ message: "Internal Server Error" + error });
+    }
+  },
 };
