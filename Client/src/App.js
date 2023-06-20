@@ -18,6 +18,8 @@ import Seating from './components/Seating/Seating';
 import SummaryPage from './Pages/SummeryPage/SummeryPage';
 import Ticket  from './components/OrderHistory/Ticket';
 import socket from './socket.io/socket';
+import { useEffect } from 'react';
+import { setLogout } from './Redux/store';
 function App() { 
 	const token = useSelector(state=>state.token)
 
