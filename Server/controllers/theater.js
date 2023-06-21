@@ -401,6 +401,7 @@ module.exports = {
     }
   },
   getOneTheaterDayRevenue: async (req, res) => {
+    console.log(req.params,">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
     try {
       const today = new Date(req.params.date); // get today's date
       const onDayRevenue = await Reservation.aggregate([

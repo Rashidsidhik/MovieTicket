@@ -8,6 +8,7 @@ import { useLocation } from "react-router-dom";
 import axios from "../../utils/axios";
 import { seatReserved } from "../../utils/Constants";
 import { toast, ToastContainer } from "react-toastify";
+
 const Silver = ["A", "B", "C", "D", "E", "F", "G", "H"];
 const ticketList = {
   silver: [],
@@ -16,7 +17,6 @@ const ticketList = {
 
 function Seating({
   seatingActive = false,
-
   type1 = "SILVER",
 }) {
   const location = useLocation();
@@ -46,9 +46,10 @@ function Seating({
     toast.error(error, {
       position: "top-right",
     });
+
   useEffect(() => {
-    try {
-      async function getHistroy() {
+    async function getHistory() {
+      try {
         const { data } = await axios.get(
           `${seatReserved}/${screenname}/${time}/${movieId}/${date}`,
           {
@@ -59,21 +60,25 @@ function Seating({
           }
         );
         SetCheck(data);
-      }
-      getHistroy();
-    } catch (error) {
-      if (
-        error.response &&
-        error.response.status >= 400 &&
-        error.response.status <= 500
-      ) {
-        generateError(error.response.data.message);
+      } catch (error) {
+        if (
+          error.response &&
+          error.response.status >= 400 &&
+          error.response.status <= 500
+        ) {
+          generateError(error.response.data.message);
+        }
       }
     }
+
+    getHistory();
+
+    // Clean up ticketList state
+    return () => {
+      ticketList.silver = [];
+      ticketList.price = 0;
+    };
   }, []);
-  if (check?.seats) {
-    const seatNumbers = check?.seats.map((seat) => seat);
-  }
 
   if (check?.seats) {
     const seatNumbers = check?.seats.map((seat) => seat.id);
@@ -109,7 +114,7 @@ function Seating({
     );
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     let a = rowsData.filter((e) => e.isSelected).length;
 
     setPrice(a * ticketPrice);
@@ -179,7 +184,11 @@ function Seating({
           </div>
 
           <div className="Screen">
-            <img style={{ width: "420px" }} src="/raeesfeed.PNG" alt="screen" />
+            <img
+              style={{ width: "420px" }}
+              src="/raeesfeed.PNG"
+              alt="screen"
+            />
           </div>
           <div></div>
         </div>

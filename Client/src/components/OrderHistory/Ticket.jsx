@@ -123,7 +123,8 @@ const Ticket = () => {
 
                       <div className="detailItem">
                         <span className="itemKey">Booked Date:</span>
-                        <span className="itemValue">{item?.bookedDate}</span>
+                        <span className="itemValue">{item?.bookedDate ? new Date(item.bookedDate).toISOString().split('T')[0] : ''}</span>
+                        
                       </div>
 
                       <div className="detailItem">
