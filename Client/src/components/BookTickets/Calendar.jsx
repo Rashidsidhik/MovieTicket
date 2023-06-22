@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import moment from "moment";
 import Carousel from "react-multi-carousel";
 import styles from "../Styling/Cinemas.module.scss";
-import { useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 import { setDates } from "../../Redux/store";
 
 export const Calendar = () => {
@@ -51,30 +51,18 @@ export const Calendar = () => {
     });
     currentDate++;
     currentDay++;
-    currentMonth++;
+    currentMonth = (currentMonth + 1) % 12;
   }
 
   const handleDateChange = (index, item) => {
     setSelectedDate(index);
-    setDate(item);
+    const selectedDate = moment({
+      year: item.year,
+      month: months.indexOf(item.monthFullName),
+      day: item.date,
+    }).toDate();
+    dispatch(setDates({ date: selectedDate }));
   };
-
-  const [date, setDate] = useState(null);
-  let formattedDate;
-
-  if (date) {
-    const selectedDates = date?.date;
-    const selectedDay = date?.day;
-    const selectedMonth = date?.monthFullName;
-    const selectedYear = date?.year;
-
-    const datestring = `${selectedMonth} ${selectedDates} ${selectedYear}`;
-    const formatString = "DD MMMM YYYY";
-
-    const dateObject = moment(datestring, formatString);
-
-    formattedDate = dateObject._i;
-  }
 
   const responsive = {
     superLargeDesktop: {
@@ -105,12 +93,7 @@ export const Calendar = () => {
         {dates?.map((item, index) => (
           <div
             className={styles.dateItem}
-            onClick={() => {
-              handleDateChange(index, item);
-              if (formattedDate) {
-                dispatch(setDates({ date: formattedDate }));
-              }
-            }}
+            onClick={() => handleDateChange(index, item)}
             style={
               index === selectedDate
                 ? { backgroundColor: "#F84464", color: "white" }

@@ -20,9 +20,10 @@ import Ticket  from './components/OrderHistory/Ticket';
 import socket from './socket.io/socket';
 import { useEffect } from 'react';
 import { setLogout } from './Redux/store';
+import Loading from './components/Loading/loading'
 function App() { 
 	const token = useSelector(state=>state.token)
-
+  const isloading = useSelector((state) => state.isloading);
 	const currentUser = useSelector(state=>state.user)
 	const dispatch = useDispatch();
 
@@ -44,6 +45,7 @@ function App() {
 	
   return (
     <div className="App" >
+      {isloading && <Loading />}
       <Routes>
        <Route path="/" exact element={<Home />} />
 			<Route path="/signup" exact element={<Signup />} />

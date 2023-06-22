@@ -46,7 +46,7 @@ function Seating({
     toast.error(error, {
       position: "top-right",
     });
-
+    let seatNumbers = []; // Declare seatNumbers array outside the loop
   useEffect(() => {
     async function getHistory() {
       try {
@@ -59,7 +59,11 @@ function Seating({
             },
           }
         );
+        console.log(data)
         SetCheck(data);
+
+
+
       } catch (error) {
         if (
           error.response &&
@@ -77,18 +81,32 @@ function Seating({
     return () => {
       ticketList.silver = [];
       ticketList.price = 0;
+      seatNumbers = [];
     };
   }, []);
+  console.log(check, "hhhhh")
+  if (check.length) {
+    
 
-  if (check?.seats) {
-    const seatNumbers = check?.seats.map((seat) => seat.id);
+check.forEach(checkRow => {
+  const rowSeatNumbers = checkRow?.seats.map(seat => seat.id); // Create temporary array for each checkRow
+  console.log(rowSeatNumbers);
 
-    if (seatNumbers.length >= 1) {
-      rowsData.forEach((obj) => {
-        const isReserved = seatNumbers.includes(obj.id);
-        obj.isReserved = isReserved;
-      });
-    }
+  if (rowSeatNumbers.length >= 1) {
+    seatNumbers.push(...rowSeatNumbers); // Add rowSeatNumbers to seatNumbers array
+  }
+});
+    // check.forEach(checkRow=>{
+    //   const seatNumbers = checkRow?.seats.map((seat) => seat.id);
+    //   console.log(seatNumbers)
+
+      if (seatNumbers.length >= 1) {
+        rowsData.forEach((obj) => {
+          const isReserved = seatNumbers.includes(obj.id);
+          obj.isReserved = isReserved;
+        });
+      }
+    // })
   }
 
   const monthNames = [
@@ -129,6 +147,16 @@ function Seating({
     );
 
     ticketList.price = price;
+
+    const updatedCheck = { ...check };
+    rowsData.forEach((e) => {
+      if (e.isSelected) {
+        updatedCheck[e.id] = true; // Update the check-in status of the seat
+      }
+    });
+
+    SetCheck(updatedCheck); // Update the state with the new check-in status
+
     setSeatActive(false);
     navigate(
       `/booktickets/summary?time=${time}&theaterId=${theaterId}&date=${date}&screenname=${screenname}&theatername=${theatername}&ticketPrice=${ticketPrice}&movieName=${movieName}&movieId=${movieId}`,
@@ -169,10 +197,10 @@ function Seating({
                       e.disable
                         ? "disable"
                         : e.isReserved
-                        ? "reserved"
-                        : e.isSelected
-                        ? "select"
-                        : "seats"
+                          ? "reserved"
+                          : e.isSelected
+                            ? "select"
+                            : "seats"
                     }
                     key={e.id}
                   >

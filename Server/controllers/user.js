@@ -422,7 +422,7 @@ module.exports = {
     const movieId = req.params.movieId;
 
     try {
-      const data = await Reservation.findOne({
+      const data = await Reservation.find({
         // theaterId: '642284895888e345c92c3d1f',
         // startAt: '09:00',
         theaterId: id,
@@ -431,7 +431,7 @@ module.exports = {
         showDate: date,
         seats: { $elemMatch: { isReserved: true } },
       });
-
+console.log(data);
       res.status(200).json(data);
     } catch (error) {
       res.status(500).json({ message: "something went wrong" + error });

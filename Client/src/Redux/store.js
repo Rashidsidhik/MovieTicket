@@ -10,6 +10,7 @@ const initialState = {
   setBookedDetails: null,
   getSeatInformation: null,
   wishlist:[],
+  isloading: false,
 };
 
 export const authSlice = createSlice({
@@ -72,6 +73,12 @@ export const authSlice = createSlice({
     setWishlist: (state, action) => {
       state.wishlist = action.payload.wishlist;
     },
+    showLoading: (state) => {
+      state.isloading = true;
+    },
+    hideLoading: (state) => {
+      state.isloading = false;
+    },
   },
 });
 
@@ -90,6 +97,8 @@ export const {
   setTempemail,
   setDates,
   handleSelectDate,
-  setWishlist
+  setWishlist,
+  showLoading,
+  hideLoading,
 } = authSlice.actions;
 export default authSlice.reducer;

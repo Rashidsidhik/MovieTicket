@@ -7,7 +7,7 @@ import { getMovies, addWishlist,removeWishlist } from "../../utils/Constants";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setMovies, setWishlist,setLogin } from "../../Redux/store";
+import { setMovies, setWishlist,setLogin,hideLoading,showLoading } from "../../Redux/store";
 import { toast, ToastContainer } from "react-toastify";
 import IconButton from "@mui/material/IconButton";
 import Favorite from "@mui/icons-material/Favorite";
@@ -20,6 +20,7 @@ const MovieCard = (props) => {
   const dispatch = useDispatch();
   const userId = user ? user._id : null;
   useEffect(() => {
+    dispatch(showLoading())
     getAllMovieList();
   }, []);
 
@@ -36,6 +37,7 @@ const MovieCard = (props) => {
 
 
         getAllMovie(response.data);
+        dispatch(hideLoading())
       })
       .catch((error) => {
         if (error.response) {

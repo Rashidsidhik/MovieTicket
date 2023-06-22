@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "../../utils/axios";
 import { SwiperSlide, Swiper } from "swiper/react";
-import { useSelector } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import MovieCard from "../movie-card/MovieCard";
 import { searchMovie } from "../../utils/Constants";
 import { toast, ToastContainer } from "react-toastify";
@@ -9,7 +9,7 @@ import { toast, ToastContainer } from "react-toastify";
 const MovieList = (props) => {
   const [searchedMovies, setSearchedMovies] = useState([]);
   const searchKey = useSelector((state) => state.searchKey);
-
+  
   const generateError = (error) =>
     toast.error(error, {
       position: "top-right",
@@ -41,6 +41,7 @@ const MovieList = (props) => {
   };
 
   useEffect(() => {
+    
     searchMovies(searchKey);
   }, [searchKey]);
 
