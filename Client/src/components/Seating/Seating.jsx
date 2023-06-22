@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import "./Seating.scss";
 import { rows } from "../data";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import Navbar from "../Navbar/Navbar";
 import { useLocation } from "react-router-dom";
 import axios from "../../utils/axios";
 import { seatReserved } from "../../utils/Constants";
 import { toast, ToastContainer } from "react-toastify";
-
+import { hideLoading, showLoading } from "../../Redux/store";
 const Silver = ["A", "B", "C", "D", "E", "F", "G", "H"];
 const ticketList = {
   silver: [],
@@ -20,6 +20,7 @@ function Seating({
   type1 = "SILVER",
 }) {
   const location = useLocation();
+  const dispatch = useDispatch()
   const { search } = location;
   const searchParams = new URLSearchParams(location.search);
   const token = useSelector((state) => state.token);
@@ -61,7 +62,7 @@ function Seating({
         );
         console.log(data)
         SetCheck(data);
-
+        dispatch(hideLoading())
 
 
       } catch (error) {
@@ -74,7 +75,7 @@ function Seating({
         }
       }
     }
-
+    dispatch(showLoading())
     getHistory();
 
     // Clean up ticketList state
