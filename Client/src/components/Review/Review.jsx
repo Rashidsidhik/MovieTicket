@@ -27,6 +27,23 @@ export default function ReviewForm({ open, setOpen, setsubmit }) {
   });
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (rating === 0) {
+      generateError("Please rate the movie.");
+      return;
+    }
+
+    if (message.trim() === "") {
+      generateError("Please write something about the movie.");
+      return;
+    }
+    if (message.trim().length < 5) {
+      generateError("The message should be at least 5 characters long.");
+      return;
+    }
+    if (!/^[a-zA-Z\s]+$/.test(message.trim())) {
+      generateError("The message should contain only alphabets and spaces.");
+      return;
+    }
     try {
       
       axios.post(
@@ -121,6 +138,7 @@ export default function ReviewForm({ open, setOpen, setsubmit }) {
                     onChange={(e) => setMessage(e.target.value)}
                     rows={4}
                     required
+                    
                   />
                 </label>
                 <button

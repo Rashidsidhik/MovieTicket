@@ -38,7 +38,7 @@ function App() {
 		socket.on("getBlocked", () => {
 			console.log('getBlocked');
 			dispatch(setLogout());
-		});
+		}); 
 	  }, []);
  
  

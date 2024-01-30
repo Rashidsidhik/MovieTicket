@@ -141,7 +141,8 @@ const Header = () => {
   };
 
   const searchBy = (e) => {
-    let key = e.target.value;
+    let key = e.target.value.toUpperCase();
+
     if (!key) {
       getMovieList();
     } else {
@@ -189,7 +190,7 @@ const Header = () => {
   useEffect(() => {}, [searchKey]);
   let ss = { sso: "jdjd" };
 
-  dispatch(setSearchKey({ searchKey: searchKey }));
+  dispatch(setSearchKey({ searchKey: searchKey.toUpperCase() }));
 
   const getMovieList = () => {
     axios

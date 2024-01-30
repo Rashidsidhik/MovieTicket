@@ -71,6 +71,42 @@ const Profileedit = () => {
 
         imageUrl = response.data.secure_url;
       }
+       // Validation for each field
+       if (!/^[a-zA-Z\s]+$/.test(data.username.trim())) {
+        generateError("The username should contain only alphabets and spaces.");
+        return;
+      }
+
+      if (!/^[0-9]+$/.test(data.phone.trim())) {
+        generateError("The phone number should contain only numbers.");
+        return;
+      }
+
+      if (!/^[a-zA-Z\s]+$/.test(data.place.trim())) {
+        generateError("The place should contain only alphabets and spaces.");
+        return;
+      }
+
+      if (!/^[a-zA-Z\s]+$/.test(data.city.trim())) {
+        generateError("The city should contain only alphabets and spaces.");
+        return;
+      }
+
+      if (!/^[0-9]+$/.test(data.pincode.trim())) {
+        generateError("The pincode should contain only numbers.");
+        return;
+      }
+
+      if (!/^[a-zA-Z0-9\s]+$/.test(data.address.trim())) {
+        generateError("The address should contain only alphanumeric characters and spaces.");
+        return;
+      }
+
+      if (!/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/i.test(data.email.trim())) {
+        generateError("Please enter a valid email address.");
+        return;
+      }
+
       const application = {
         username: data.username,
         phone: data.phone,

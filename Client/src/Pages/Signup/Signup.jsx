@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import axios from "../../utils/axios";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./styles.module.scss";
@@ -6,49 +6,62 @@ import { signUpPost } from "../../utils/Constants";
 import { ToastContainer, toast } from "react-toastify";
 import { Toaster } from "react-hot-toast";
 import { useFormik } from "formik";
-import React from "react";
 
 const validate = (values) => {
-  
   const errors = {};
+
   //username
   if (!values.username) {
     errors.username = toast.error("Username is required");
   } else if (values.username.includes(" ")) {
     errors.username = toast.error("Invalid username");
   } else if (values.username.length < 5) {
-    errors.username = toast.error("username must contain five characters");
+    errors.username = toast.error("Username must contain five characters");
   } else if (
     /[0-9\!\@\#\$\%\^\&\*\)\(\+\=\.\<\>\{\}\[\]\:\;\'\"\|\~\`\_\-]/g.test(
       values.username
     )
   ) {
     errors.username = toast.error(
-      " username does not contain special characters "
+      "Username does not contain special characters"
     );
   }
 
   //email
   if (!values.email) {
-    errors.email = toast.error("email is requried");
+    errors.email = toast.error("Email is required");
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
-    errors.email = toast.error("invalid email address");
+    errors.email = toast.error("Invalid email address");
   }
 
   //password
   if (!values.password) {
-    errors.password = toast.error("password is required");
+    errors.password = toast.error("Password is required");
   } else if (values.password.includes(" ")) {
-    errors.password = toast.error("wrong password");
+    errors.password = toast.error("Password cannot contain spaces");
   } else if (values.password.length < 8) {
-    errors.password = toast.error("password atleast contain five characters");
+    errors.password = toast.error("Password must be at least 8 characters long");
+  } else if (!/[a-z]/.test(values.password)) {
+    errors.password = toast.error("Password must contain at least one lowercase letter");
+  } else if (!/[A-Z]/.test(values.password)) {
+    errors.password = toast.error("Password must contain at least one uppercase letter");
+  } else if (!/[0-9]/.test(values.password)) {
+    errors.password = toast.error("Password must contain at least one digit");
+  } else if (!/[!@#$%^&*]/.test(values.password)) {
+    errors.password = toast.error("Password must contain at least one special character (!@#$%^&*)");
+  }
+
+  //confirm password
+  if (!values.confirmPassword) {
+    errors.confirmPassword = toast.error("Confirm Password is required");
+  } else if (values.confirmPassword !== values.password) {
+    errors.confirmPassword = toast.error("Passwords do not match");
   }
 
   return errors;
 };
 
 const Signup = () => {
-
   const navigate = useNavigate();
   const [error, setError] = useState("");
 
@@ -57,24 +70,29 @@ const Signup = () => {
       username: "",
       email: "",
       password: "",
+      confirmPassword: "",
     },
     validate,
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: async (values) => {
-      try {
-        const url = signUpPost;
-        const { values: res } = await axios.post(url, values);
-        setTimeout(() => {
-          navigate("/login");
-        }, 2000);
+        const { confirmPassword, ...formData } = values; // Exclude confirmPassword field from the form data
+  
+        try {
+          const url = signUpPost;
+          const { values: res } = await axios.post(url, formData);
+          setTimeout(() => {
+            navigate("/login");
+          }, 2000);
+      
 
         toast.success("Signup successful!", {
           position: toast.POSITION.TOP_RIGHT,
           autoClose: 1000,
         });
 
-  
+        // Clear the form fields after successful submission
+        formik.resetForm();
       } catch (error) {
         if (
           error.response &&
@@ -86,9 +104,6 @@ const Signup = () => {
       }
     },
   });
-
-
-
 
   return (
     <div className={styles.signup_container}>
@@ -122,6 +137,8 @@ const Signup = () => {
               value={formik.values.username}
               className={styles.input}
             />
+           
+
             <input
               type="email"
               placeholder="Email"
@@ -131,6 +148,8 @@ const Signup = () => {
               value={formik.values.email}
               className={styles.input}
             />
+            
+
             <input
               type="password"
               placeholder="Password"
@@ -140,9 +159,23 @@ const Signup = () => {
               value={formik.values.password}
               className={styles.input}
             />
+            
+
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              name="confirmPassword"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.confirmPassword}
+              className={styles.input}
+            />
+           
+
             {error && <div className={styles.error_msg}>{error}</div>}
+
             <button type="submit" className={styles.green_btn}>
-              Sing Up
+              Sign Up
             </button>
           </form>
           <ToastContainer />

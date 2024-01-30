@@ -12,7 +12,7 @@ module.exports = {
         message: { text: message },
         users: [from, to],
         sender: from,
-        recipient: to,
+        recipient: to, 
         recipientName: recipientName,
         senderName: senderName,
       });

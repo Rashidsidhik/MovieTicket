@@ -205,7 +205,7 @@ const Sidebar = () => {
             </li>
           </Link>
          
-          {/* <br />
+          <br />
           {unmessage?.length > 0 ? (
             <Tooltip
               title={
@@ -235,7 +235,7 @@ const Sidebar = () => {
                 <span>CHAT</span>
               </Badge>
             </Link>
-          )} */}
+          )}
 
           <br />
           <li>

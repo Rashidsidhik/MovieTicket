@@ -12,7 +12,7 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import { getAllTheater, getmsg, latestMessage } from "../../utils/Constants";
 
 export default function Chat() {
-  const host = "http://localhost:1000/";
+  const host = process.env.REACT_APP_BASE_URL;
   const socket = useRef();
   const [contacts, setContacts] = useState([]);
   const [currentChat, setCurrentChat] = useState(undefined);

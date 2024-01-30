@@ -151,6 +151,12 @@ const Login = () => {
             </button>
           </form>
           <div style={{ paddingTop: "10px" }} id="signdiv"></div>
+            <div className={styles.sample_view}>
+          <h2>Demo Login:</h2>
+          <p>Email: rashidps44@gmail.com</p>
+          <p>Password: Admin@123</p>
+          <p>(For testing purposes)</p>
+        </div>
           <ToastContainer />
           <span className={styles.signupSpan}>
             Don't have an account? <Link to="/signup">Signup</Link>

@@ -10,7 +10,7 @@ import Rating from "../../components/Rating/Rating";
 import ReviewModel from "../../components/Review/Review";
 import { setMovies, setWishlist,setLogin } from "../../Redux/store";
 import { useSelector,useDispatch } from "react-redux";
-import Button from "@mui/material/Button";
+import Button from "@mui/material/Button"; 
 import ShowReview from "../../components/Review/showReview";
 import { Box, Divider } from "@mui/material";
 import Swal from "sweetalert2";

@@ -11,7 +11,7 @@ const poster = require("../models/Poster");
 const Message = require("../models/MessageModel");
 const { ObjectId } = require("mongodb");
 const mongoose = require("mongoose");
-module.exports = {
+module.exports = {   
   adminSignup: async (req, res) => {
     try {
       const { error } = validate(req.body);
